@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "coolbelt",
+  "version": "${version}",
+
+  "name": "Coolbelt",
+  "description": "Adds slots for your sword, pickaxe, axe, and shovel. Automatically switches between them.",
+  "authors": [
+    "Vanapiton"
+  ],
+  "contact": {
+    "homepage": "https://coolbelt.1up.fi/",
+    "sources": "https://github.com/vanapiton/coolbelt",
+    "issues": "https://github.com/vanapiton/coolbelt/issues"
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/coolbelt/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "fi._1up.coolbelt.Coolbelt"
+    ],
+    "stationapi:event_bus": [
+      "fi._1up.coolbelt.events.PlayerToolListener"
+    ],
+    "stationapi:event_bus_client": [
+    ],
+    "stationapi:event_bus_server": [
+    ]
+  },
+  "mixins": [
+    "coolbelt.mixins.json"
+  ],
+
+  "depends": {
+    "minecraft": "1.0.0-beta.7.3"
+  }
+}
