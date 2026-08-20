@@ -2,13 +2,13 @@ package fi._1up.coolbelt.mixin.player;
 
 import com.periut.accessoryapi.api.Accessory;
 import com.periut.accessoryapi.api.helper.AccessoryAccess;
+import fi._1up.coolbelt.Coolbelt;
 import fi._1up.coolbelt.api.ToolbeltInventory;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.entity.player.StationFlatteningPlayerInventory;
 import org.spongepowered.asm.mixin.Mixin;
@@ -53,18 +53,18 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory, Station
         ItemStack selectedItem = player.inventory.getSelectedItem();
         int bestDamage = selectedItem != null ? selectedItem.getAttackDamage(target) : STANDARD_DAMAGE;
 
-        ItemStack bestAccessory = null;
-        for (ItemStack accessory : AccessoryAccess.getAccessories(player)) {
-            if (accessory == null) continue;
+        ItemStack bestStack = null;
+        for (ItemStack stack : AccessoryAccess.getAccessories(player)) {
+            if (stack == null) continue;
 
-            int damage = accessory.getAttackDamage(target);
+            int damage = stack.getAttackDamage(target);
             if (damage > bestDamage) {
                 bestDamage = damage;
-                bestAccessory = accessory;
+                bestStack = stack;
             }
         }
 
-        if (bestAccessory != null && bestAccessory.getItem() instanceof Accessory accessory) {
+        if (bestStack != null && bestStack.getItem() instanceof Accessory accessory) {
             ((ToolbeltInventory)player.inventory).coolbelt$setSelectedAccessory(accessory);
         }
 
@@ -84,8 +84,19 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory, Station
             coolbelt$selectedAccessorySlot = EMPTY_SLOT;
             return;
         }
+
         PlayerEntity player = ((PlayerInventory)(Object)this).player;
         String type = accessory.getAccessoryTypes(null)[0];
+        ItemStack[] stacks = AccessoryAccess.getAccessories(player, type);
+
+        if(stacks.length > 0 && stacks[0] != null) {
+            if(stacks[0].getDamage() >= stacks[0].getMaxDamage()) {
+                AccessoryAccess.removeAccessory(player, stacks[0].getItem());
+                coolbelt$setSelectedAccessory(null);
+                return;
+            }
+        }
+
         this.coolbelt$selectedAccessorySlot = AccessoryAccess.getAccessoryInventory(player).getSlotFor(type, 0);
     }
 }

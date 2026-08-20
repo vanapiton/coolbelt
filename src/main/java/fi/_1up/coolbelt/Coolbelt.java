@@ -1,12 +1,9 @@
 package fi._1up.coolbelt;
 
-import com.periut.accessoryapi.AccessoryAPI;
 import com.periut.accessoryapi.api.AccessoryRegister;
 import net.fabricmc.api.ModInitializer;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.util.Namespace;
-import net.modificationstation.stationapi.api.util.Null;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 import java.util.List;
 

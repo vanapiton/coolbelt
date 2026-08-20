@@ -2,6 +2,7 @@ package fi._1up.coolbelt.events;
 
 import com.periut.accessoryapi.api.Accessory;
 import com.periut.accessoryapi.api.helper.AccessoryAccess;
+import fi._1up.coolbelt.Coolbelt;
 import fi._1up.coolbelt.api.ToolbeltInventory;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.block.Block;
@@ -18,22 +19,21 @@ public class PlayerToolListener {
 
         event.resultProvider = () -> {
             float bestStrength = previousProvider != null ? previousProvider.getAsFloat() : STANDARD_STRENGTH;
-            ItemStack bestAccessory = null;
+            ItemStack bestStack = null;
             Block block = event.blockState.getBlock();
 
-            for (ItemStack accessory : AccessoryAccess.getAccessories(event.player)) {
-                if (accessory == null) continue;
+            for (ItemStack stack : AccessoryAccess.getAccessories(event.player)) {
+                if (stack == null) continue;
 
-                float strength = accessory.getMiningSpeedMultiplier(block);
+                float strength = stack.getMiningSpeedMultiplier(block);
                 if (strength > bestStrength) {
                     bestStrength = strength;
-                    bestAccessory = accessory;
+                    bestStack = stack;
                 }
             }
 
-            if (bestAccessory != null && bestAccessory.getItem() instanceof Accessory accessory) {
+            if (bestStack != null && bestStack.getItem() instanceof Accessory accessory) {
                 ((ToolbeltInventory) event.player.inventory).coolbelt$setSelectedAccessory(accessory);
-                return bestStrength;
             }
 
             return bestStrength;
@@ -50,9 +50,9 @@ public class PlayerToolListener {
             Block block = event.blockState.getBlock();
 
             ItemStack[] accessories = AccessoryAccess.getAccessories(event.player);
-            for(ItemStack accessory : accessories) {
-                if(accessory == null) continue;
-                if(accessory.isSuitableFor(block)) {
+            for(ItemStack stack : accessories) {
+                if(stack == null) continue;
+                if(stack.isSuitableFor(block)) {
                     return true;
                 }
             }
