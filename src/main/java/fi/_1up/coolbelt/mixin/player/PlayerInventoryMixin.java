@@ -2,33 +2,41 @@ package fi._1up.coolbelt.mixin.player;
 
 import com.periut.accessoryapi.api.Accessory;
 import com.periut.accessoryapi.api.helper.AccessoryAccess;
-import fi._1up.coolbelt.Coolbelt;
 import fi._1up.coolbelt.api.ToolbeltInventory;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.modificationstation.stationapi.api.entity.player.StationFlatteningPlayerInventory;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.function.Function;
+
 @Mixin(PlayerInventory.class)
-public abstract class PlayerInventoryMixin implements ToolbeltInventory, StationFlatteningPlayerInventory {
+public abstract class PlayerInventoryMixin implements ToolbeltInventory {
     @Unique
-    private final static int STANDARD_DAMAGE = 1;
+    private final static int STANDARD_ATTACK_DAMAGE = 1;
+    @Unique
+    private final static float STANDARD_MINING_SPEED = 1;
 
     @Unique
-    private int coolbelt$selectedAccessorySlot = EMPTY_SLOT;
+    private ItemStack coolbelt$selectedAccessory = null;
+
+    @Shadow
+    public PlayerEntity player;
+    @Shadow
+    public int selectedSlot = 0;
 
     @Inject(method = "inventoryTick", at = @At("HEAD"))
     public void tick(CallbackInfo ci) {
-        PlayerEntity player = ((PlayerInventory)(Object)this).player;
         if(!player.handSwinging) {
             coolbelt$setSelectedAccessory(null);
         }
@@ -36,7 +44,7 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory, Station
 
     @Inject(method = "scrollInHotbar", at = @At("HEAD"))
     @Environment(EnvType.CLIENT)
-    public void scrollInHotbar(int _x, CallbackInfo ci) {
+    public void scrollInHotbar(int dir, CallbackInfo ci) {
         coolbelt$setSelectedAccessory(null);
     }
 
@@ -46,57 +54,78 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory, Station
         if (stack != null) cir.setReturnValue(stack);
     }
 
-    @Inject(method = "getAttackDamage", at=@At("HEAD"), cancellable = true)
-    void getAttackDamage(Entity target, CallbackInfoReturnable<Integer> cir) {
-        PlayerEntity player = ((PlayerInventory)(Object)this).player;
-
-        ItemStack selectedItem = player.inventory.getSelectedItem();
-        int bestDamage = selectedItem != null ? selectedItem.getAttackDamage(target) : STANDARD_DAMAGE;
-
+    @Unique
+    private <T extends Comparable<T>> ItemStack findBestAccessory(Function<ItemStack, T> valueExtractor, T baseline) {
+        T bestValue = baseline;
         ItemStack bestStack = null;
+
         for (ItemStack stack : AccessoryAccess.getAccessories(player)) {
             if (stack == null) continue;
 
-            int damage = stack.getAttackDamage(target);
-            if (damage > bestDamage) {
-                bestDamage = damage;
+            T value = valueExtractor.apply(stack);
+            if (value.compareTo(bestValue) > 0) {
+                bestValue = value;
                 bestStack = stack;
             }
         }
+        return bestStack;
+    }
 
-        if (bestStack != null && bestStack.getItem() instanceof Accessory accessory) {
-            ((ToolbeltInventory)player.inventory).coolbelt$setSelectedAccessory(accessory);
+    @Inject(method = "getAttackDamage", at=@At("HEAD"), cancellable = true)
+    void getAttackDamage(Entity target, CallbackInfoReturnable<Integer> cir) {
+        ItemStack selectedItem = getStack(selectedSlot);
+        int baseDamage = selectedItem != null ? selectedItem.getAttackDamage(target) : STANDARD_ATTACK_DAMAGE;
+
+        ItemStack bestStack = findBestAccessory(stack -> stack.getAttackDamage(target), baseDamage);
+
+        if (bestStack != null && bestStack.getItem() instanceof Accessory) {
+            coolbelt$setSelectedAccessory(bestStack);
+            cir.setReturnValue(bestStack.getAttackDamage(target));
         }
+    }
 
-        cir.setReturnValue(bestDamage);
+    @Inject(method = "getStrengthOnBlock", at=@At("HEAD"), cancellable = true)
+    public void getStrengthOnBlock(Block block, CallbackInfoReturnable<Float> cir) {
+        ItemStack selectedItem = getStack(selectedSlot);
+        float baseStrength = selectedItem != null ? selectedItem.getMiningSpeedMultiplier(block) : STANDARD_MINING_SPEED;
+
+        ItemStack bestStack = findBestAccessory(stack -> stack.getMiningSpeedMultiplier(block), baseStrength);
+
+        if (bestStack != null && bestStack.getItem() instanceof Accessory) {
+            coolbelt$setSelectedAccessory(bestStack);
+            cir.setReturnValue(bestStack.getMiningSpeedMultiplier(block));
+        }
+    }
+
+    @Inject(method = "isUsingEffectiveTool", at=@At("HEAD"), cancellable = true)
+    public void isUsingEffectiveTool(Block block, CallbackInfoReturnable<Boolean> cir) {
+        ItemStack[] accessories = AccessoryAccess.getAccessories(player);
+
+        for(ItemStack stack : accessories) {
+            if(stack == null) continue;
+            if(stack.isSuitableFor(block)) {
+                cir.setReturnValue(true);
+            }
+        }
     }
 
     @Override
     public ItemStack coolbelt$getSelectedAccessory() {
-        if(coolbelt$selectedAccessorySlot < 0) return null;
-        PlayerEntity player = ((PlayerInventory)(Object)this).player;
-        return AccessoryAccess.getAccessory(player, coolbelt$selectedAccessorySlot);
+        if(coolbelt$selectedAccessory == null) return null;
+
+        ItemStack stack = coolbelt$selectedAccessory;
+
+        if(stack.isDamageable() && stack.getDamage() >= stack.getMaxDamage()) {
+            AccessoryAccess.removeAccessory(player, stack.getItem());
+            coolbelt$setSelectedAccessory(null);
+            return null;
+        }
+
+        return stack;
     }
 
     @Override
-    public void coolbelt$setSelectedAccessory(Accessory accessory) {
-        if(accessory == null) {
-            coolbelt$selectedAccessorySlot = EMPTY_SLOT;
-            return;
-        }
-
-        PlayerEntity player = ((PlayerInventory)(Object)this).player;
-        String type = accessory.getAccessoryTypes(null)[0];
-        ItemStack[] stacks = AccessoryAccess.getAccessories(player, type);
-
-        if(stacks.length > 0 && stacks[0] != null) {
-            if(stacks[0].getDamage() >= stacks[0].getMaxDamage()) {
-                AccessoryAccess.removeAccessory(player, stacks[0].getItem());
-                coolbelt$setSelectedAccessory(null);
-                return;
-            }
-        }
-
-        this.coolbelt$selectedAccessorySlot = AccessoryAccess.getAccessoryInventory(player).getSlotFor(type, 0);
+    public void coolbelt$setSelectedAccessory(ItemStack accessory) {
+        coolbelt$selectedAccessory = accessory;
     }
 }

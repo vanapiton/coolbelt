@@ -11,12 +11,11 @@ The mod automatically selects the most efficient tool for the job, unless the cu
 This mod requires the following in order to function:
 
 - **Babric**
-- **Station API**
 - **Accessory API**
 
 ## Installation
 
-1. Ensure **Babric**, **Station API**, and **Accessory API** are installed for Minecraft Beta 1.7.3.
+1. Ensure **Babric** and **Accessory API** are installed for Minecraft Beta 1.7.3.
 2. Download the `coolbelt-x.x.x.jar` file.
 3. Place the `.jar` file into your instance's `mods` directory.
 4. Launch the instance.

@@ -77,18 +77,18 @@ dependencies {
 
 	// StAPI itself.
 	// transitiveImplementation tells babric loom that you want this dependency to be pulled into other mod's development workspaces. Best used ONLY for required dependencies.
-	modImplementation("net.modificationstation:StationAPI:${project.properties["stationapi_version"]}")
+	//modImplementation("net.modificationstation:StationAPI:${project.properties["stationapi_version"]}")
 
 	// Dependencies
 	modImplementation("maven.modrinth:accessory-api:${project.properties["accessoryapi_version"]}")
 
 	// Extra mods.
 	// https://github.com/calmilamsy/glass-config-api
-	modImplementation("net.glasslauncher.mods:GlassConfigAPI:${project.properties["gcapi_version"]}")
+	//modImplementation("net.glasslauncher.mods:GlassConfigAPI:${project.properties["gcapi_version"]}")
 	// https://github.com/calmilamsy/modmenu
-	modImplementation("net.danygames2014:modmenu:${project.properties["modmenu_version"]}")
+	//modImplementation("net.danygames2014:modmenu:${project.properties["modmenu_version"]}")
 	// https://github.com/Glass-Series/Always-More-Items
-	modImplementation("net.glasslauncher.mods:AlwaysMoreItems:${project.properties["alwaysmoreitems_version"]}")
+	//modImplementation("net.glasslauncher.mods:AlwaysMoreItems:${project.properties["alwaysmoreitems_version"]}")
 }
 
 configurations.all {

@@ -21,13 +21,6 @@
   "entrypoints": {
     "main": [
       "fi._1up.coolbelt.Coolbelt"
-    ],
-    "stationapi:event_bus": [
-      "fi._1up.coolbelt.events.PlayerToolListener"
-    ],
-    "stationapi:event_bus_client": [
-    ],
-    "stationapi:event_bus_server": [
     ]
   },
   "mixins": [
