@@ -21,6 +21,9 @@
   "entrypoints": {
     "main": [
       "fi._1up.coolbelt.Coolbelt"
+    ],
+    "stationapi:event_bus": [
+      "fi._1up.coolbelt.compat.stationapi.StationAPICompat"
     ]
   },
   "mixins": [

@@ -23,11 +23,6 @@ import java.util.function.Function;
 @Mixin(PlayerInventory.class)
 public abstract class PlayerInventoryMixin implements ToolbeltInventory {
     @Unique
-    private final static int STANDARD_ATTACK_DAMAGE = 1;
-    @Unique
-    private final static float STANDARD_MINING_SPEED = 1;
-
-    @Unique
     private ItemStack coolbelt$selectedAccessory = null;
 
     @Shadow
