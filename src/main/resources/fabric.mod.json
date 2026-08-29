@@ -24,6 +24,12 @@
     ],
     "stationapi:event_bus": [
       "fi._1up.coolbelt.compat.stationapi.StationAPICompat"
+    ],
+    "gcapi3": [
+      "fi._1up.coolbelt.config.CoolbeltConfig"
+    ],
+    "gcapi3:factory_provider": [
+      "fi._1up.coolbelt.config.HotbarAlgorithmFactoryProvider"
     ]
   },
   "mixins": [

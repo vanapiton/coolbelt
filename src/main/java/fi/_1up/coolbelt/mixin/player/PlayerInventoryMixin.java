@@ -20,6 +20,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.function.Function;
 
+import static fi._1up.coolbelt.config.CoolbeltConfig.config;
+
 @Mixin(PlayerInventory.class)
 public abstract class PlayerInventoryMixin implements ToolbeltInventory {
     @Unique
@@ -66,17 +68,44 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory {
         return bestStack;
     }
 
-    @Inject(method = "getAttackDamage", at = @At("HEAD"), cancellable = true)
-    private void getAttackDamage(Entity target, CallbackInfoReturnable<Integer> cir) {
+    @Unique
+    private <T extends Comparable<T>> void processToolSelection(
+            Function<ItemStack, T> valueExtractor,
+            T baseline,
+            T minValue,
+            CallbackInfoReturnable<T> cir
+    ) {
         ItemStack selectedItem = getStack(selectedSlot);
-        int baseDamage = selectedItem != null ? selectedItem.getAttackDamage(target) : STANDARD_ATTACK_DAMAGE;
+        T baseValue = valueExtractor.apply(selectedItem);
 
-        ItemStack bestStack = findBestAccessory(stack -> stack.getAttackDamage(target), baseDamage);
+        switch (config.hotbarAlgorithm) {
+            case ALWAYS_PREFER_HOTBAR_TOOL:
+                if (baseValue.compareTo(baseline) > 0) return;
+                break;
+            case ALWAYS_PREFER_BELT_TOOL:
+                baseValue = minValue;
+                break;
+            case ALWAYS_PREFER_FASTEST_TOOL:
+            default:
+                break;
+        }
+
+        ItemStack bestStack = findBestAccessory(valueExtractor, baseValue);
 
         if (bestStack != null && bestStack.getItem() instanceof Accessory) {
             coolbelt$setSelectedAccessory(bestStack);
-            cir.setReturnValue(bestStack.getAttackDamage(target));
+            cir.setReturnValue(valueExtractor.apply(bestStack));
         }
+    }
+
+    @Inject(method = "getAttackDamage", at = @At("HEAD"), cancellable = true)
+    private void getAttackDamage(Entity target, CallbackInfoReturnable<Integer> cir) {
+        processToolSelection(
+                stack -> stack != null ? stack.getAttackDamage(target) : STANDARD_ATTACK_DAMAGE,
+                STANDARD_ATTACK_DAMAGE,
+                Integer.MIN_VALUE,
+                cir
+        );
     }
 
     @Unique
@@ -85,21 +114,33 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory {
             return block.material.isHandHarvestable() ? STANDARD_MINING_SPEED : Float.NEGATIVE_INFINITY;
         }
 
+        if(!config.useSwordForMining && stack.getItem() instanceof Accessory accessory) {
+            String[] types = accessory.getAccessoryTypes(stack);
+            for (String type : types) {
+                if (type.equals("sword")) return Float.NEGATIVE_INFINITY;
+            }
+        }
+
         boolean isSuitable = block.material.isHandHarvestable() || stack.isSuitableFor(block);
         return isSuitable ? stack.getMiningSpeedMultiplier(block) : Float.NEGATIVE_INFINITY;
     }
 
+    @Unique
+    private boolean shouldSkipZeroHardnessBlock(Block block) {
+        if (config.useToolForZeroHardness) return false;
+        return block.getHardness() == 0 && block.material.isHandHarvestable();
+    }
+
     @Inject(method = "getStrengthOnBlock", at = @At("HEAD"), cancellable = true)
     private void getStrengthOnBlock(Block block, CallbackInfoReturnable<Float> cir) {
-        ItemStack selectedItem = getStack(selectedSlot);
-        float baseStrength = calculateEffectiveStrength(selectedItem, block);
+        if (shouldSkipZeroHardnessBlock(block)) return;
 
-        ItemStack bestStack = findBestAccessory(stack -> calculateEffectiveStrength(stack, block), baseStrength);
-
-        if (bestStack != null && bestStack.getItem() instanceof Accessory) {
-            coolbelt$setSelectedAccessory(bestStack);
-            cir.setReturnValue(bestStack.getMiningSpeedMultiplier(block));
-        }
+        processToolSelection(
+                stack -> calculateEffectiveStrength(stack, block),
+                STANDARD_MINING_SPEED,
+                Float.NEGATIVE_INFINITY,
+                cir
+        );
     }
 
     @Inject(method = "isUsingEffectiveTool", at = @At("HEAD"), cancellable = true)

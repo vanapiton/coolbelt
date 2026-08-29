@@ -1,8 +1,4 @@
-import org.gradle.internal.extensions.stdlib.toDefaultLowerCase
-import java.io.BufferedReader
-import java.io.InputStreamReader
 import java.net.URI
-import java.net.URL
 
 plugins {
 	id("maven-publish")
@@ -22,8 +18,8 @@ loom {
 //	accessWidenerPath = file("src/main/resources/examplemod.accesswidener")
 
 	runs {
-		// If you want to make a testmod for your mod, right click on src, and create a new folder with the same name as source() below.
-		// Intellij should give suggestions for testmod folders.
+		// If you want to make a test mod for your mod, right click on src, and create a new folder with the same name as source() below.
+		// IntelliJ should give suggestions for test mod folders.
 		register("testClient") {
 			source("test")
 			client()
@@ -66,7 +62,7 @@ dependencies {
 	implementation("org.slf4j:slf4j-api:1.8.0-beta4")
 	implementation("org.apache.logging.log4j:log4j-slf4j18-impl:2.17.1")
 
-	// convenience stuff
+	// Convenience stuff
 	// adds some useful annotations for data classes. does not add any dependencies
 	compileOnly("org.projectlombok:lombok:1.18.42")
 	annotationProcessor("org.projectlombok:lombok:1.18.42")
@@ -76,12 +72,14 @@ dependencies {
 	implementation("com.google.guava:guava:33.2.1-jre")
 
 	// Dependencies
+	// https://github.com/matthewperiut/accessory-api
 	modImplementation("maven.modrinth:accessory-api:${project.properties["accessoryapi_version"]}")
-
-	// Extra mods.
-	modImplementation("net.modificationstation:StationAPI:${project.properties["stationapi_version"]}")
 	// https://github.com/calmilamsy/glass-config-api
 	modImplementation("net.glasslauncher.mods:GlassConfigAPI:${project.properties["gcapi_version"]}")
+
+	// Extra mods
+	// https://github.com/ModificationStation/StationAPI
+	modImplementation("net.modificationstation:StationAPI:${project.properties["stationapi_version"]}")
 	// https://github.com/calmilamsy/modmenu
 	modImplementation("net.danygames2014:modmenu:${project.properties["modmenu_version"]}")
 	// https://github.com/Glass-Series/Always-More-Items
@@ -120,7 +118,7 @@ tasks.withType<Jar> {
 	}
 }
 
-// Tells gradle to not generate module files for maven.
+// Tells Gradle to not generate module files for maven.
 // They aren't standard and the documentation is abysmal. Stop it.
 tasks.withType<GenerateModuleMetadata> {
 	enabled = false

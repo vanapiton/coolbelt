@@ -8,6 +8,7 @@ public class Coolbelt implements ModInitializer {
     private static final String SLOT_TEX_PATH = "/assets/coolbelt/textures/slot/tools.png";
     private static final int SLOT_TEX_SIZE = 16;
 
+    @SuppressWarnings("SameParameterValue")
     private record ToolSlot(String key, int texX, int texY, int h, int v) {
         public int texX() { return texX * SLOT_TEX_SIZE; }
         public int texY() { return texY * SLOT_TEX_SIZE; }

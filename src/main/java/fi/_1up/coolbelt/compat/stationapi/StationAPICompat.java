@@ -5,6 +5,7 @@ import net.mine_diver.unsafeevents.listener.EventListener;
 import net.modificationstation.stationapi.api.event.entity.player.IsPlayerUsingEffectiveToolEvent;
 import net.modificationstation.stationapi.api.event.entity.player.PlayerStrengthOnBlockEvent;
 
+@SuppressWarnings("unused")
 public class StationAPICompat {
     @EventListener
     public void onPlayerStrengthOnBlockEvent(PlayerStrengthOnBlockEvent event) {
