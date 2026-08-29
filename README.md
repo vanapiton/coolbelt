@@ -12,7 +12,7 @@ This mod requires the following in order to function:
 
 - **Babric**
 - **Accessory API**
-- Optionally, to toggle the side the armor is displayed, via Accessory API's config:
+- Optionally, to access Coolbelt's and Accessory API's options:
   - **Glass Config API**
   - **Mod Menu Babric**
 
