@@ -31,7 +31,7 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory {
     public int selectedSlot = 0;
 
     @Inject(method = "inventoryTick", at = @At("HEAD"))
-    public void tick(CallbackInfo ci) {
+    private void tick(CallbackInfo ci) {
         if(!player.handSwinging) {
             coolbelt$setSelectedAccessory(null);
         }
@@ -39,12 +39,12 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory {
 
     @Inject(method = "scrollInHotbar", at = @At("HEAD"))
     @Environment(EnvType.CLIENT)
-    public void scrollInHotbar(int dir, CallbackInfo ci) {
+    private void scrollInHotbar(int dir, CallbackInfo ci) {
         coolbelt$setSelectedAccessory(null);
     }
 
     @Inject(method = "getSelectedItem", at = @At("HEAD"), cancellable = true)
-    public void getSelectedItem(CallbackInfoReturnable<ItemStack> cir) {
+    private void getSelectedItem(CallbackInfoReturnable<ItemStack> cir) {
         ItemStack stack = coolbelt$getSelectedAccessory();
         if (stack != null) cir.setReturnValue(stack);
     }
@@ -66,8 +66,8 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory {
         return bestStack;
     }
 
-    @Inject(method = "getAttackDamage", at=@At("HEAD"), cancellable = true)
-    void getAttackDamage(Entity target, CallbackInfoReturnable<Integer> cir) {
+    @Inject(method = "getAttackDamage", at = @At("HEAD"), cancellable = true)
+    private void getAttackDamage(Entity target, CallbackInfoReturnable<Integer> cir) {
         ItemStack selectedItem = getStack(selectedSlot);
         int baseDamage = selectedItem != null ? selectedItem.getAttackDamage(target) : STANDARD_ATTACK_DAMAGE;
 
@@ -79,12 +79,22 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory {
         }
     }
 
-    @Inject(method = "getStrengthOnBlock", at=@At("HEAD"), cancellable = true)
-    public void getStrengthOnBlock(Block block, CallbackInfoReturnable<Float> cir) {
-        ItemStack selectedItem = getStack(selectedSlot);
-        float baseStrength = selectedItem != null ? selectedItem.getMiningSpeedMultiplier(block) : STANDARD_MINING_SPEED;
+    @Unique
+    private float calculateEffectiveStrength(ItemStack stack, Block block) {
+        if (stack == null) {
+            return block.material.isHandHarvestable() ? STANDARD_MINING_SPEED : Float.NEGATIVE_INFINITY;
+        }
 
-        ItemStack bestStack = findBestAccessory(stack -> stack.getMiningSpeedMultiplier(block), baseStrength);
+        boolean isSuitable = block.material.isHandHarvestable() || stack.isSuitableFor(block);
+        return isSuitable ? stack.getMiningSpeedMultiplier(block) : Float.NEGATIVE_INFINITY;
+    }
+
+    @Inject(method = "getStrengthOnBlock", at = @At("HEAD"), cancellable = true)
+    private void getStrengthOnBlock(Block block, CallbackInfoReturnable<Float> cir) {
+        ItemStack selectedItem = getStack(selectedSlot);
+        float baseStrength = calculateEffectiveStrength(selectedItem, block);
+
+        ItemStack bestStack = findBestAccessory(stack -> calculateEffectiveStrength(stack, block), baseStrength);
 
         if (bestStack != null && bestStack.getItem() instanceof Accessory) {
             coolbelt$setSelectedAccessory(bestStack);
@@ -92,14 +102,15 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory {
         }
     }
 
-    @Inject(method = "isUsingEffectiveTool", at=@At("HEAD"), cancellable = true)
-    public void isUsingEffectiveTool(Block block, CallbackInfoReturnable<Boolean> cir) {
+    @Inject(method = "isUsingEffectiveTool", at = @At("HEAD"), cancellable = true)
+    private void isUsingEffectiveTool(Block block, CallbackInfoReturnable<Boolean> cir) {
         ItemStack[] accessories = AccessoryAccess.getAccessories(player);
 
         for(ItemStack stack : accessories) {
             if(stack == null) continue;
             if(stack.isSuitableFor(block)) {
                 cir.setReturnValue(true);
+                return;
             }
         }
     }
