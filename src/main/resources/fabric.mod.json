@@ -14,7 +14,7 @@
     "issues": "https://github.com/vanapiton/coolbelt/issues"
   },
 
-  "license": "CC0-1.0",
+  "license": "MIT",
   "icon": "assets/coolbelt/icon.png",
 
   "environment": "*",
