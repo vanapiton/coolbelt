@@ -3,8 +3,10 @@ package fi._1up.coolbelt.mixin.player;
 import com.periut.accessoryapi.api.Accessory;
 import com.periut.accessoryapi.api.helper.AccessoryAccess;
 import fi._1up.coolbelt.api.ToolbeltInventory;
+import fi._1up.coolbelt.compat.stationapi.StationAPICompat;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -119,6 +121,11 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory {
             for (String type : types) {
                 if (type.equals("sword")) return Float.NEGATIVE_INFINITY;
             }
+        }
+
+        if(FabricLoader.getInstance().isModLoaded("stationapi")) {
+            boolean isSuitable = StationAPICompat.isSuitableFor(stack, block);
+            return isSuitable ? StationAPICompat.getMiningSpeedMultiplier(stack) : Float.NEGATIVE_INFINITY;
         }
 
         boolean isSuitable = block.material.isHandHarvestable() || stack.isSuitableFor(block);
