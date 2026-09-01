@@ -1,6 +1,7 @@
 package fi._1up.coolbelt.compat.stationapi;
 
 import fi._1up.coolbelt.api.ToolbeltInventory;
+import net.fabricmc.loader.api.FabricLoader;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -10,6 +11,7 @@ import net.modificationstation.stationapi.impl.item.ToolEffectivenessImpl;
 
 @SuppressWarnings("unused")
 public class StationAPICompat {
+    public static final boolean IS_STAPI_LOADED = FabricLoader.getInstance().isModLoaded("stationapi");
 
     public static float getMiningSpeedMultiplier(ItemStack stack) {
         return ToolEffectivenessImpl.getMiningSpeedMultiplier(stack);

@@ -21,11 +21,19 @@ public class CoolbeltConfigFields {
     public Boolean useSwordForMining = true;
 
     @ConfigEntry(
+            nameKey = "config.coolbelt.search_whole_hotbar.name",
+            name = "Search whole hotbar",
+            descriptionKey = "config.coolbelt.search_whole_hotbar.desc",
+            description = "Searches for tools in the hotbar as opposed to just the held item."
+    )
+    public Boolean searchWholeHotbar = true;
+
+    @ConfigEntry(
             nameKey = "config.coolbelt.hotbar_algorithm.name",
             name = "Hotbar algorithm",
             descriptionKey = "config.coolbelt.hotbar_algorithm.desc",
             description = "Sets which slot is preferred when both the hotbar and toolbelt have an appropriate tool."
     )
-    public HotbarAlgorithm hotbarAlgorithm = HotbarAlgorithm.ALWAYS_PREFER_FASTEST_TOOL;
+    public HotbarAlgorithm hotbarAlgorithm = HotbarAlgorithm.ALWAYS_PREFER_HAND_TOOL;
 
 }
