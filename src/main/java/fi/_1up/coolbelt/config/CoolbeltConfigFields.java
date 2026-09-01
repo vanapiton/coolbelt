@@ -36,4 +36,13 @@ public class CoolbeltConfigFields {
     )
     public HotbarAlgorithm hotbarAlgorithm = HotbarAlgorithm.ALWAYS_PREFER_HAND_TOOL;
 
+    @ConfigEntry(
+            nameKey = "config.coolbelt.is_toolbelt_enabled.name",
+            name = "Enable toolbelt §8(Requires restart)§r",
+            descriptionKey = "config.coolbelt.is_toolbelt_enabled.desc",
+            description = "Determines if toolbelt slots are added; If not, §owhy do you have this mod?§r",
+            multiplayerSynced = true,
+            requiresRestart = true
+    )
+    public Boolean isToolbeltEnabled = true;
 }

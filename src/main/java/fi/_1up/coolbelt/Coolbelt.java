@@ -4,6 +4,8 @@ import com.periut.accessoryapi.api.AccessoryRegister;
 import net.fabricmc.api.ModInitializer;
 import java.util.List;
 
+import static fi._1up.coolbelt.config.CoolbeltConfig.config;
+
 public class Coolbelt implements ModInitializer {
     private static final String SLOT_TEX_PATH = "/assets/coolbelt/textures/slot/tools.png";
     private static final int SLOT_TEX_SIZE = 16;
@@ -23,8 +25,10 @@ public class Coolbelt implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        for (ToolSlot slot : SLOTS) {
-            AccessoryRegister.add(slot.key(), SLOT_TEX_PATH, slot.texX(), slot.texY(), slot.h(), slot.v());
+        if(config.isToolbeltEnabled) {
+            for (ToolSlot slot : SLOTS) {
+                AccessoryRegister.add(slot.key(), SLOT_TEX_PATH, slot.texX(), slot.texY(), slot.h(), slot.v());
+            }
         }
     }
 }
