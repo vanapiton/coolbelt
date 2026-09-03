@@ -6,7 +6,7 @@ plugins {
 	id("babric-loom-extension") version "1.15.3"
 }
 
-// Helper function to get gradle properties
+// Helper function to get Gradle properties
 fun Project.prop(name: String): String =
 	providers.gradleProperty(name).get()
 
@@ -37,13 +37,10 @@ loom {
 }
 
 repositories {
-	maven("https://maven.glass-launcher.net/snapshots/")
 	maven("https://maven.glass-launcher.net/releases/")
 	maven("https://maven.glass-launcher.net/babric")
 	maven("https://maven.minecraftforge.net/")
 	maven("https://jitpack.io/")
-	maven("https://matthewperiut.github.io/repository")
-	maven("https://maven.ornithemc.net/")
 	mavenCentral()
 	exclusiveContent {
 		forRepository {
@@ -149,4 +146,3 @@ publishing {
 		}
 	}
 }
-
