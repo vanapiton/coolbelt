@@ -4,7 +4,8 @@
 
 Coolbelt is a toolbelt mod for Minecraft Beta 1.7.3 that adds slots for your **sword**, **pickaxe**, **axe**, and **shovel**. 
 The tool that is currently in-use is displayed in your main hand and replaces the item currently being held.
-The mod automatically selects the most efficient tool for the job, unless the currently held item would be equally efficient or better.
+The mod automatically selects the most efficient tool for the job,
+and allows you to choose from several options for deciding which tool to use when the selected item is also a tool.
 
 ## Dependencies
 
