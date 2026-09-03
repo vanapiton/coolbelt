@@ -5,6 +5,15 @@ import net.glasslauncher.mods.gcapi3.api.ConfigEntry;
 
 @SuppressWarnings("CanBeFinal")
 public class CoolbeltConfigFields {
+    @ConfigCategory(
+        nameKey = "config.coolbelt.is_slot_enabled.name",
+        name = "Toggle toolbelt slots §8(Requires restart)§r",
+        descriptionKey = "config.coolbelt.is_slot_enabled.desc",
+        description = "Determines which toolbelt slots are added; If none, §owhy do you have this mod?§r",
+        multiplayerSynced = true
+    )
+    public CoolbeltConfigSlotToggles isSlotEnabled = new CoolbeltConfigSlotToggles();
+
     @ConfigEntry(
         nameKey = "config.coolbelt.use_tool_for_zero_hardness.name",
         name = "Use toolbelt for zero-hardness blocks",
@@ -36,13 +45,4 @@ public class CoolbeltConfigFields {
         description = "Sets which slot is preferred when both the hotbar and toolbelt have an appropriate tool."
     )
     public HotbarAlgorithm hotbarAlgorithm = HotbarAlgorithm.ALWAYS_PREFER_HAND_TOOL;
-
-    @ConfigCategory(
-        nameKey = "config.coolbelt.is_slot_enabled.name",
-        name = "Toggle toolbelt slots §8(Requires restart)§r",
-        descriptionKey = "config.coolbelt.is_slot_enabled.desc",
-        description = "Determines which toolbelt slots are added; If none, §owhy do you have this mod?§r",
-        multiplayerSynced = true
-    )
-    public CoolbeltConfigSlotToggles isSlotEnabled = new CoolbeltConfigSlotToggles();
 }
