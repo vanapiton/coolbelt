@@ -6,16 +6,19 @@ plugins {
 	id("babric-loom-extension") version "1.15.3"
 }
 
-//noinspection GroovyUnusedAssignment
-java.sourceCompatibility = JavaVersion.VERSION_17
-java.targetCompatibility = JavaVersion.VERSION_17
+// Helper function to get gradle properties
+fun Project.prop(name: String): String =
+	providers.gradleProperty(name).get()
 
-base.archivesName = project.properties["archives_base_name"] as String
-version = project.properties["mod_version"] as String
-group = project.properties["maven_group"] as String
+base {
+	archivesName = prop("archives_base_name")
+}
+
+version = prop("mod_version")
+group = prop("maven_group")
 
 loom {
-//	accessWidenerPath = file("src/main/resources/examplemod.accesswidener")
+//	accessWidenerPath = file("src/main/resources/coolbelt.accesswidener")
 
 	runs {
 		// If you want to make a test mod for your mod, right click on src, and create a new folder with the same name as source() below.
@@ -54,8 +57,8 @@ repositories {
 
 dependencies {
 	minecraft("com.mojang:minecraft:b1.7.3")
-	mappings("net.glasslauncher:biny:${project.properties["yarn_mappings"]}:v2")
-	modImplementation("net.fabricmc:fabric-loader:${project.properties["loader_version"]}")
+	mappings("net.glasslauncher:biny:${prop("yarn_mappings")}:v2")
+	modImplementation("net.fabricmc:fabric-loader:${prop("loader_version")}")
 
 	implementation("org.apache.logging.log4j:log4j-core:2.17.2")
 
@@ -73,54 +76,55 @@ dependencies {
 
 	// Dependencies
 	// https://github.com/matthewperiut/accessory-api
-	modImplementation("maven.modrinth:accessory-api:${project.properties["accessoryapi_version"]}")
+	modImplementation("maven.modrinth:accessory-api:${prop("accessoryapi_version")}")
 	// https://github.com/calmilamsy/glass-config-api
-	modImplementation("net.glasslauncher.mods:GlassConfigAPI:${project.properties["gcapi_version"]}")
+	modImplementation("net.glasslauncher.mods:GlassConfigAPI:${prop("gcapi_version")}")
 
 	// Extra mods
 	// https://github.com/ModificationStation/StationAPI
-	modImplementation("net.modificationstation:StationAPI:${project.properties["stationapi_version"]}")
+	modImplementation("net.modificationstation:StationAPI:${prop("stationapi_version")}")
 	// https://github.com/calmilamsy/modmenu
-	modImplementation("net.danygames2014:modmenu:${project.properties["modmenu_version"]}")
+	modImplementation("net.danygames2014:modmenu:${prop("modmenu_version")}")
 	// https://github.com/Glass-Series/Always-More-Items
-	modImplementation("net.glasslauncher.mods:AlwaysMoreItems:${project.properties["alwaysmoreitems_version"]}")
+	modImplementation("net.glasslauncher.mods:AlwaysMoreItems:${prop("alwaysmoreitems_version")}")
 }
 
 configurations.all {
-	exclude("babric")
+	exclude(group = "babric")
 }
 
-tasks.withType<ProcessResources> {
-	inputs.property("version", project.properties["version"])
+tasks.withType<ProcessResources>().configureEach {
+	inputs.property("version", version)
 
 	filesMatching("fabric.mod.json") {
-		expand(mapOf("version" to project.properties["version"]))
+		expand("version" to version)
 	}
 }
 
 // ensure that the encoding is set to UTF-8, no matter what the system default is
 // this fixes some edge cases with special characters not displaying correctly
 // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-tasks.withType<JavaCompile> {
+tasks.withType<JavaCompile>().configureEach {
 	options.encoding = "UTF-8"
 }
 
 java {
-	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-	// if it is present.
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
+	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task if it is present.
 	// If you remove this line, sources will not be generated.
 	withSourcesJar()
 }
 
-tasks.withType<Jar> {
+tasks.withType<Jar>().configureEach {
 	from("LICENSE") {
-		rename { "${it}_${project.properties["archivesBaseName"]}" }
+		rename { "${it}_${base.archivesName}" }
 	}
 }
 
 // Tells Gradle to not generate module files for maven.
 // They aren't standard and the documentation is abysmal. Stop it.
-tasks.withType<GenerateModuleMetadata> {
+tasks.withType<GenerateModuleMetadata>().configureEach {
 	enabled = false
 }
 
@@ -131,16 +135,16 @@ publishing {
 			maven {
 				url = URI("https://maven.example.com")
 				credentials {
-					username = "${project.properties["my_maven_username"]}"
-					password = "${project.properties["my_maven_password"]}"
+					username = prop("my_maven_username")
+					password = prop("my_maven_password")
 				}
 			}
 		}
 	}
 
 	publications {
-		register("mavenJava", MavenPublication::class) {
-			artifactId = project.properties["archives_base_name"] as String
+		register<MavenPublication>("mavenJava") {
+			artifactId = prop("archives_base_name")
 			from(components["java"])
 		}
 	}
