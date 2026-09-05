@@ -5,8 +5,6 @@ import net.minecraft.item.ItemStack;
 
 @SuppressWarnings("unused")
 public interface ToolbeltInventory extends Inventory {
-    int STANDARD_ATTACK_DAMAGE = 1;
-    float STANDARD_MINING_SPEED = 1;
     ItemStack coolbelt$getSelectedAccessory();
     void coolbelt$setSelectedAccessory(ItemStack accessory);
 }

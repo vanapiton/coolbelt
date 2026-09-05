@@ -4,6 +4,7 @@ import net.glasslauncher.mods.gcapi3.api.ConfigEntry;
 import net.glasslauncher.mods.gcapi3.api.TriBoolean;
 import net.glasslauncher.mods.gcapi3.api.ValueOnVanillaServer;
 
+@SuppressWarnings("CanBeFinal")
 public class CoolbeltConfigSlotToggles {
     @ConfigEntry(
         nameKey = "config.coolbelt.is_slot_enabled.sword.name",
