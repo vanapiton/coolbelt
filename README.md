@@ -1,4 +1,4 @@
-![Coolbelt Icon](src/main/resources/assets/coolbelt/icon.png)
+![Coolbelt Icon](/icon512.png)
 
 # Coolbelt
 
