@@ -27,4 +27,4 @@ This mod requires the following in order to function:
 
 ## Compatibility
 
-Because Coolbelt heavily utilizes mixins into the `PlayerInventory` class, it may conflict with mods that do the same or overwrite it.
+Mixes into `PlayerInventory`, `InGameHud`, `AxeItem`, `PickaxeItem`, `ShovelItem`, `SwordItem`.
