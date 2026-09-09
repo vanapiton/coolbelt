@@ -45,4 +45,12 @@ public class CoolbeltConfigFields {
         description = "Sets which slot is preferred when both the hotbar and toolbelt have an appropriate tool."
     )
     public HotbarAlgorithm hotbarAlgorithm = HotbarAlgorithm.ALWAYS_PREFER_HAND_TOOL;
+
+    @ConfigEntry(
+        nameKey = "config.coolbelt.show_durability_toast.name",
+        name = "Show durability toast",
+        descriptionKey = "config.coolbelt.show_durability_toast.desc",
+        description = "Sets if a tool durability indicator is shown next to the hotbar"
+    )
+    public Boolean showDurabilityToast = true;
 }

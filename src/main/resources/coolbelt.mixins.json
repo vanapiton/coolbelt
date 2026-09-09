@@ -4,15 +4,16 @@
   "package": "fi._1up.coolbelt.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "player.PlayerInventoryMixin",
     "item.AxeItemMixin",
     "item.PickaxeItemMixin",
     "item.ShovelItemMixin",
-    "item.SwordItemMixin"
+    "item.SwordItemMixin",
+    "player.PlayerInventoryMixin"
   ],
   "server": [
   ],
   "client": [
+    "gui.InGameHudMixin"
   ],
   "injectors": {
     "defaultRequire": 1
