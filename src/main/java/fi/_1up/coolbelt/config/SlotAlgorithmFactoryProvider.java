@@ -10,11 +10,11 @@ import net.glasslauncher.mods.gcapi3.impl.object.entry.EnumConfigEntryHandler;
 import java.lang.reflect.*;
 import java.util.function.*;
 
-public class HotbarAlgorithmFactoryProvider implements ConfigFactoryProvider {
+public class SlotAlgorithmFactoryProvider implements ConfigFactoryProvider {
 
     private static int toOrdinal(Object value) {
         if (value instanceof Integer ordinal) return ordinal;
-        return ((HotbarAlgorithm) value).ordinal();
+        return ((SlotAlgorithm) value).ordinal();
     }
 
     @Override
@@ -23,18 +23,18 @@ public class HotbarAlgorithmFactoryProvider implements ConfigFactoryProvider {
             ImmutableMap.Builder<Type, SeptFunction<String, ConfigEntry, Field, Object, Boolean, Object, Object, ConfigEntryHandler<?>>> immutableBuilder
     ) {
         immutableBuilder.put(
-            HotbarAlgorithm.class,
+            SlotAlgorithm.class,
             (id, entry, pField, pObject, mpSynced, enumOrInt, defaultEnum) -> new EnumConfigEntryHandler<>(
                 id, entry, pField, pObject, mpSynced,
                 toOrdinal(enumOrInt),
                 toOrdinal(defaultEnum),
-                HotbarAlgorithm.class
+                SlotAlgorithm.class
             )
         );
     }
 
     @Override
     public void provideSaveFactories(ImmutableMap.Builder<Type, Function<Object, Object>> immutableBuilder) {
-        immutableBuilder.put(HotbarAlgorithm.class, enumEntry -> enumEntry);
+        immutableBuilder.put(SlotAlgorithm.class, enumEntry -> enumEntry);
     }
 }

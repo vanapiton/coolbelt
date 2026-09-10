@@ -29,7 +29,7 @@
       "fi._1up.coolbelt.config.CoolbeltConfig"
     ],
     "gcapi3:factory_provider": [
-      "fi._1up.coolbelt.config.HotbarAlgorithmFactoryProvider"
+      "fi._1up.coolbelt.config.SlotAlgorithmFactoryProvider"
     ]
   },
   "mixins": [
