@@ -49,10 +49,10 @@ jobs:
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           modrinth-game-versions: b1.7.3
           modrinth-id: ${{ vars.MODRINTH_ID }}
-          modrinth-dependencies: |
-            K9k9gNxR(required)
-            rFeWTq4G(optional)
-            vf3X9pHM(optional)
+          dependencies: |
+            accessory-api(required)
+            glass-config-api(optional)
+            modmenu-babric(optional)
 
           loaders: babric fabric
 
