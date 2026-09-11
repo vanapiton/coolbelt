@@ -1,4 +1,5 @@
 ![Coolbelt Icon](/icon512.png)
+![Coolbelt Showcase](/showcase.png)
 
 # Coolbelt
 

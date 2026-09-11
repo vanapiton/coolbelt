@@ -71,15 +71,15 @@ dependencies {
 	implementation("org.jetbrains:annotations:23.0.0")
 	implementation("com.google.guava:guava:33.2.1-jre")
 
-	// Dependencies
+	// Build Dependencies
 	// https://github.com/matthewperiut/accessory-api
 	modImplementation("maven.modrinth:accessory-api:${prop("accessoryapi_version")}")
 	// https://github.com/calmilamsy/glass-config-api
 	modImplementation("net.glasslauncher.mods:GlassConfigAPI:${prop("gcapi_version")}")
-
-	// Extra mods
 	// https://github.com/ModificationStation/StationAPI
 	modImplementation("net.modificationstation:StationAPI:${prop("stationapi_version")}")
+
+	// Extra mods
 	// https://github.com/calmilamsy/modmenu
 	modImplementation("net.danygames2014:modmenu:${prop("modmenu_version")}")
 	// https://github.com/Glass-Series/Always-More-Items
