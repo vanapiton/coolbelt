@@ -1,4 +1,4 @@
-![Coolbelt Icon](/icon512.png)
+![Coolbelt Icon](/src/main/resources/assets/coolbelt/icon.png)
 ![A screenshot showcasing several features of Coolbelt, namely the slots and the durability previews.](/showcase.png)
 
 # Coolbelt
