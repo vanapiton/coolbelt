@@ -47,9 +47,9 @@
   "custom": {
     "mc-publish": {
       "dependencies": [
-        "accessoryapi(required){modrinth:accessory-api}",
-        "gcapi3(optional){modrinth:glass-config-api}",
-        "modmenu(optional){modrinth:modmenu-babric}"
+        "accessory-api(required)",
+        "glass-config-api(optional)",
+        "modmenu-babric(optional)"
       ]
     }
   }
