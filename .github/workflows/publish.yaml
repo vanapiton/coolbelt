@@ -50,9 +50,9 @@ jobs:
           modrinth-game-versions: b1.7.3
           modrinth-id: ${{ vars.MODRINTH_ID }}
           dependencies: |
-            accessory-api(required)
-            glass-config-api(optional)
-            modmenu-babric(optional)
+            accessoryapi(required){modrinth:K9k9gNxR}
+            gcapi3(optional){modrinth:rFeWTq4G}
+            modmenu(optional){modrinth:vf3X9pHM}
 
           loaders: babric fabric
 
