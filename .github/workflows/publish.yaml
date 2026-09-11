@@ -62,7 +62,9 @@ jobs:
           name: ${{ github.event.release.name }}
           version: ${{ github.event.release.tag_name }}
           changelog: ${{ github.event.release.body }}
-          loaders: babric fabric
+          loaders: |-
+            paper
+            spigot
           game-versions: b1.7.3
           files: build/libs/coolbelt-${{ github.event.release.tag_name }}.jar
           # JSON string inside YAML? Yuck...
