@@ -1,7 +1,4 @@
-import java.net.URI
-
 plugins {
-	id("maven-publish")
 	id("fabric-loom") version "1.16.3"
 	id("babric-loom-extension") version "1.15.3"
 }
@@ -116,33 +113,5 @@ java {
 tasks.withType<Jar>().configureEach {
 	from("LICENSE") {
 		rename { "${it}_${base.archivesName}" }
-	}
-}
-
-// Tells Gradle to not generate module files for maven.
-// They aren't standard and the documentation is abysmal. Stop it.
-tasks.withType<GenerateModuleMetadata>().configureEach {
-	enabled = false
-}
-
-publishing {
-	repositories {
-		mavenLocal()
-		if (project.hasProperty("my_maven_username")) {
-			maven {
-				url = URI("https://maven.example.com")
-				credentials {
-					username = prop("my_maven_username")
-					password = prop("my_maven_password")
-				}
-			}
-		}
-	}
-
-	publications {
-		register<MavenPublication>("mavenJava") {
-			artifactId = prop("archives_base_name")
-			from(components["java"])
-		}
 	}
 }

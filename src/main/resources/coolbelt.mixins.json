@@ -8,6 +8,7 @@
     "item.PickaxeItemMixin",
     "item.ShovelItemMixin",
     "item.SwordItemMixin",
+    "item.ToolItemMixin",
     "player.PlayerInventoryMixin"
   ],
   "server": [

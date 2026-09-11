@@ -5,8 +5,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import org.spongepowered.asm.mixin.Mixin;
 
+import static fi._1up.coolbelt.config.CoolbeltConfig.CONFIG;
+
 @Mixin(SwordItem.class)
 public class SwordItemMixin implements ToolAccessory {
     @Override
-    public String[] getAccessoryTypes(ItemStack itemStack) { return new String[] { "sword" }; }
+    public String[] getAccessoryTypes(ItemStack itemStack) {
+        if(CONFIG.isSlotEnabled.sword) return new String[] { "sword" };
+        return new String[] {};
+    }
 }

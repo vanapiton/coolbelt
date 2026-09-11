@@ -30,7 +30,7 @@ import static fi._1up.coolbelt.api.AttackDamageRegistry.UNDAMAGEABLE;
 import static fi._1up.coolbelt.api.AttackDamageRegistry.STANDARD_ATTACK_DAMAGE;
 import static fi._1up.coolbelt.api.MiningSpeedRegistry.STANDARD_MINING_SPEED;
 import static fi._1up.coolbelt.api.MiningSpeedRegistry.UNMINABLE;
-import static fi._1up.coolbelt.config.CoolbeltConfig.config;
+import static fi._1up.coolbelt.config.CoolbeltConfig.CONFIG;
 
 @Mixin(PlayerInventory.class)
 public abstract class PlayerInventoryMixin implements ToolbeltInventory {
@@ -98,7 +98,7 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory {
         double handValue = valueExtractor.applyAsDouble(handStack);
 
         int bestHotbarSlot = selectedSlot;
-        if (config.searchHotbar || config.slotAlgorithm == SlotAlgorithm.ALWAYS_PREFER_HOTBAR_TOOL) {
+        if (CONFIG.searchHotbar || CONFIG.slotAlgorithm == SlotAlgorithm.ALWAYS_PREFER_HOTBAR_TOOL) {
             int bestSlot = findBestItemIndex(main, HOTBAR_SIZE, valueExtractor, handValue);
             if (bestSlot >= 0) bestHotbarSlot = bestSlot;
         }
@@ -106,7 +106,7 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory {
         ItemStack bestHotbarStack = getStack(bestHotbarSlot);
         double bestHotbarValue = (bestHotbarSlot == selectedSlot) ? handValue : valueExtractor.applyAsDouble(bestHotbarStack);
 
-        switch (config.slotAlgorithm) {
+        switch (CONFIG.slotAlgorithm) {
             case ALWAYS_PREFER_HAND_TOOL:
                 if (isTool(handStack) || handValue > baseline) {
                     return new ToolSelectionResult(minValue, selectedSlot, null);
@@ -159,7 +159,7 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory {
 
     @Unique
     private boolean shouldSkipZeroHardnessBlock(Block block) {
-        if (config.useToolForZeroHardness) return false;
+        if (CONFIG.useToolForZeroHardness) return false;
         return block.getHardness() == 0 && block.material.isHandHarvestable();
     }
 
@@ -181,7 +181,7 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory {
 
     @Inject(method = "isUsingEffectiveTool", at = @At("HEAD"), cancellable = true)
     private void isUsingEffectiveTool(Block block, CallbackInfoReturnable<Boolean> cir) {
-        if (config.searchHotbar || config.slotAlgorithm == SlotAlgorithm.ALWAYS_PREFER_HOTBAR_TOOL) {
+        if (CONFIG.searchHotbar || CONFIG.slotAlgorithm == SlotAlgorithm.ALWAYS_PREFER_HOTBAR_TOOL) {
             for (int slot = 0; slot < HOTBAR_SIZE; slot++) {
                 ItemStack stack = main[slot];
                 if (stack != null && stack.isSuitableFor(block)) {

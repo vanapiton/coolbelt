@@ -8,7 +8,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-import static fi._1up.coolbelt.config.CoolbeltConfig.config;
+import static fi._1up.coolbelt.Coolbelt.LOGGER;
+import static fi._1up.coolbelt.config.CoolbeltConfig.CONFIG;
 
 public final class MiningSpeedRegistry {
     public static final float STANDARD_MINING_SPEED = 1.0f;
@@ -33,7 +34,7 @@ public final class MiningSpeedRegistry {
         // Sword provider
         register(ItemEvalRegistry.PRIORITY_HIGH, (stack, block) -> {
             if (stack != null && stack.getItem() instanceof SwordItem) {
-                if (!config.useSwordForMining) return Optional.of(UNMINABLE);
+                if (!CONFIG.useSwordForMining) return Optional.of(UNMINABLE);
                 return block.material.isHandHarvestable()
                         ? Optional.of(STANDARD_SWORD_MINING_SPEED)
                         : Optional.empty();
@@ -50,6 +51,7 @@ public final class MiningSpeedRegistry {
 
     public static void register(int priority, @NotNull ItemEvalProvider<Block, Float> provider) {
         REGISTRY.register(priority, provider);
+        LOGGER.info("Mining speed provider registered with priority %d.", priority);
     }
 
     public static float getSpeed(@Nullable ItemStack stack, @NotNull Block block) {

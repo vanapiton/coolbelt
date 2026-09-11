@@ -7,6 +7,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
+import static fi._1up.coolbelt.Coolbelt.LOGGER;
+
 public final class AttackDamageRegistry {
     public static final int STANDARD_ATTACK_DAMAGE = 1;
     public static final int UNDAMAGEABLE = Integer.MIN_VALUE;
@@ -33,6 +35,7 @@ public final class AttackDamageRegistry {
 
     public static void register(int priority, @NotNull ItemEvalProvider<Entity, Integer> provider) {
         REGISTRY.register(priority, provider);
+        LOGGER.info("Attack damage provider registered with priority %d.", priority);
     }
 
     public static int getDamage(@Nullable ItemStack stack, @NotNull Entity target) {

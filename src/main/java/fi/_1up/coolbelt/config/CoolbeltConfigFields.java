@@ -2,6 +2,8 @@ package fi._1up.coolbelt.config;
 
 import net.glasslauncher.mods.gcapi3.api.ConfigCategory;
 import net.glasslauncher.mods.gcapi3.api.ConfigEntry;
+import net.glasslauncher.mods.gcapi3.api.TriBoolean;
+import net.glasslauncher.mods.gcapi3.api.ValueOnVanillaServer;
 
 @SuppressWarnings("CanBeFinal")
 public class CoolbeltConfigFields {
@@ -53,4 +55,14 @@ public class CoolbeltConfigFields {
             description = "Sets which slot is preferred when multiple slots have an appropriate tool."
     )
     public SlotAlgorithm slotAlgorithm = SlotAlgorithm.ALWAYS_PREFER_HAND_TOOL;
+
+    @ConfigEntry(
+            nameKey = "config.coolbelt.allow_slotting_modded_tools.name",
+            name = "Allow modded tools to slot into pickaxe, axe, and shovel slots",
+            descriptionKey = "config.coolbelt.allow_slotting_modded_tools.desc",
+            description = "Mainly intended for compatible mods that add paxels.",
+            multiplayerSynced = true
+    )
+    @ValueOnVanillaServer(booleanValue = TriBoolean.FALSE)
+    public Boolean allowSlottingModdedTools = false;
 }

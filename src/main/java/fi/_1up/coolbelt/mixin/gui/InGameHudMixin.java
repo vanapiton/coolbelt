@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.*;
 
-import static fi._1up.coolbelt.config.CoolbeltConfig.config;
+import static fi._1up.coolbelt.config.CoolbeltConfig.CONFIG;
 
 @Mixin(InGameHud.class)
 public class InGameHudMixin {
@@ -25,7 +25,7 @@ public class InGameHudMixin {
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/platform/Lighting;turnOff()V"))
     private void render(float tickDelta, boolean screenOpen, int mouseX, int mouseY, CallbackInfo ci) {
-        if (!config.hud.showDurabilityHUD) return;
+        if (!CONFIG.hud.showDurabilityHUD) return;
 
         ScreenScaler scaler = new ScreenScaler(minecraft.options, minecraft.displayWidth, minecraft.displayHeight);
         int x = scaler.getScaledWidth() / 2 - 8;

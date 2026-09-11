@@ -28,4 +28,4 @@ This mod requires the following in order to function:
 
 ## Compatibility
 
-Mixes into `PlayerInventory`, `InGameHud`, `AxeItem`, `PickaxeItem`, `ShovelItem`, `SwordItem`.
+Mixes into `PlayerInventory`, `InGameHud`, `ToolItem`, `AxeItem`, `PickaxeItem`, `ShovelItem`, `SwordItem`.
