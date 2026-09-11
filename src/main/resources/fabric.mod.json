@@ -43,14 +43,5 @@
   "suggests": {
     "gcapi3": "*",
     "modmenu": "*"
-  },
-  "custom": {
-    "mc-publish": {
-      "dependencies": [
-        "accessory-api(required)",
-        "glass-config-api(optional)",
-        "modmenu-babric(optional)"
-      ]
-    }
   }
 }
