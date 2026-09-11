@@ -43,5 +43,14 @@
   "suggests": {
     "gcapi3": "*",
     "modmenu": "*"
+  },
+  "custom": {
+    "mc-publish": {
+      "dependencies": [
+        "accessoryapi(required){modrinth:K9k9gNxR}",
+        "gcapi3(optional){modrinth:rFeWTq4G}",
+        "modmenu(optional){modrinth:vf3X9pHM}"
+      ]
+    }
   }
 }
