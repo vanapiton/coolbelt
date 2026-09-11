@@ -64,7 +64,7 @@ jobs:
           changelog: ${{ github.event.release.body }}
           loaders: babric fabric
           game-versions: b1.7.3
-          files: build/libs/!(*-@(dev|sources|javadoc)).jar
+          files: build/libs/coolbelt-${{ github.event.release.tag_name }}.jar
           # JSON string inside YAML? Yuck...
           dependencies: |-
             [
