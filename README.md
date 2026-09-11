@@ -1,5 +1,5 @@
 ![Coolbelt Icon](/icon512.png)
-![Coolbelt Showcase](/showcase.png)
+![A screenshot showcasing several features of Coolbelt, namely the slots and the durability previews.](/showcase.png)
 
 # Coolbelt
 
