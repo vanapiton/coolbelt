@@ -49,28 +49,23 @@ jobs:
           name: build
           path: build/libs
 
-      - name: Upload to GitHub Release
-        uses: softprops/action-gh-release@v2
+      - name: Publish releases
+        uses: Kir-Antipov/mc-publish@v3.3
         with:
-          files: build/libs/*.jar
+          files: build/libs/!(*-@(dev|sources|javadoc)).jar
+          game-version-filter: betas
 
-      - name: Upload to Modrinth
-        uses: cloudnode-pro/modrinth-publish@v2
-        with:
-          token: ${{ secrets.MODRINTH_TOKEN }}
-          project: ${{ vars.MODRINTH_ID }}
-          name: ${{ github.event.release.name }}
-          version: ${{ github.event.release.tag_name }}
-          changelog: ${{ github.event.release.body }}
-          loaders: |-
-            babric
-            fabric
-          game-versions: b1.7.3
-          files: build/libs/coolbelt-${{ github.event.release.tag_name }}.jar
-          # JSON string inside YAML? Yuck...
-          dependencies: |-
-            [
-              {"project_id": "K9k9gNxR", "dependency_type": "required"},
-              {"project_id": "rFeWTq4G", "dependency_type": "optional"},
-              {"project_id": "vf3X9pHM", "dependency_type": "optional"}
-            ]
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          modrinth-game-versions: b1.7.3
+          modrinth-id: ${{ vars.MODRINTH_ID }}
+          modrinth-dependencies: |
+            K9k9gNxR(required)
+            rFeWTq4G(optional)
+            vf3X9pHM(optional)
+
+          loaders: babric fabric
+
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-files: |
+            build/libs/!(*-@(dev|sources|javadoc)).jar
+            build/libs/*-@(dev|sources|javadoc).jar
