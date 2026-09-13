@@ -35,4 +35,4 @@ Mixes into `PlayerInventory`, `InGameHud`, `ToolItem`, `AxeItem`, `PickaxeItem`,
 > [!WARNING]
 > The API will be subject to breaking changes until version `2.0.0`.
 
-For documentation, see: TBD.
+For documentation, see: [vanapiton.github.io/coolbelt](https://vanapiton.github.io/coolbelt).
