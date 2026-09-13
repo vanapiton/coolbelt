@@ -22,28 +22,28 @@ public class CoolbeltConfigHud {
 
     @ConfigEntry(
             nameKey = "config.coolbelt.hud.tools_offset_x.name",
-            name = "Tools position offset X in slots",
+            name = "Tools horizontal offset measured in slots",
             minValue = Integer.MIN_VALUE
     )
     public Integer toolsOffsetX = 6;
 
     @ConfigEntry(
             nameKey = "config.coolbelt.hud.tools_offset_y.name",
-            name = "Tools position offset Y in slots",
+            name = "Tools vertical offset measured in slots",
             minValue = Integer.MIN_VALUE
     )
     public Integer toolsOffsetY = 0;
 
     @ConfigEntry(
             nameKey = "config.coolbelt.hud.tools_step_x.name",
-            name = "Tools per-tool step X in slots",
+            name = "Tools per-tool horizontal step measured in slots",
             minValue = Integer.MIN_VALUE
     )
     public Integer toolStepX = 1;
 
     @ConfigEntry(
             nameKey = "config.coolbelt.hud.tools_step_y.name",
-            name = "Tools per-tool step Y in slots",
+            name = "Tools per-tool vertical step measured in slots",
             minValue = Integer.MIN_VALUE
     )
     public Integer toolStepY = 0;
@@ -58,28 +58,28 @@ public class CoolbeltConfigHud {
 
     @ConfigEntry(
             nameKey = "config.coolbelt.hud.armors_offset_x.name",
-            name = "Armors position offset X in slots",
+            name = "Armors horizontal offset measured in slots",
             minValue = Integer.MIN_VALUE
     )
     public Integer armorsOffsetX = -6;
 
     @ConfigEntry(
             nameKey = "config.coolbelt.hud.armors_offset_y.name",
-            name = "Armors position offset Y in slots",
+            name = "Armors vertical offset measured in slots",
             minValue = Integer.MIN_VALUE
     )
     public Integer armorsOffsetY = 0;
 
     @ConfigEntry(
             nameKey = "config.coolbelt.hud.armors_step_x.name",
-            name = "Armors per-piece step X in slots",
+            name = "Armors per-piece horizontal step measured in slots",
             minValue = Integer.MIN_VALUE
     )
     public Integer armorStepX = -1;
 
     @ConfigEntry(
             nameKey = "config.coolbelt.hud.armors_step_y.name",
-            name = "Armors per-piece step Y in slots",
+            name = "Armors per-piece vertical step measured in slots",
             minValue = Integer.MIN_VALUE
     )
     public Integer armorStepY = 0;

@@ -29,3 +29,10 @@ This mod requires the following in order to function:
 ## Compatibility
 
 Mixes into `PlayerInventory`, `InGameHud`, `ToolItem`, `AxeItem`, `PickaxeItem`, `ShovelItem`, `SwordItem`.
+
+## API
+
+> [!WARNING]
+> The API will be subject to breaking changes until version `2.0.0`.
+
+For documentation, see: TBD.

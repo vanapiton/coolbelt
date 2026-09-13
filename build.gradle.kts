@@ -102,12 +102,19 @@ tasks.withType<JavaCompile>().configureEach {
 	options.encoding = "UTF-8"
 }
 
+// Configure Javadoc task parameters
+tasks.withType<Javadoc>().configureEach {
+	options.encoding = "UTF-8"
+	include("**/api/**")
+}
+
 java {
 	sourceCompatibility = JavaVersion.VERSION_17
 	targetCompatibility = JavaVersion.VERSION_17
 	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task if it is present.
 	// If you remove this line, sources will not be generated.
 	withSourcesJar()
+	withJavadocJar()
 }
 
 tasks.withType<Jar>().configureEach {
