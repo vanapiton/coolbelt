@@ -36,7 +36,7 @@ public final class AttackDamageRegistry {
     /// Private constructor to prevent instantiation.
     private AttackDamageRegistry() {}
 
-    /// Registers an [ItemEvalProvider] using default [ItemEvalRegistry#PRIORITY_VANILLA].
+    /// Registers an [ItemEvalProvider] using default [ItemEvalRegistry#PRIORITY_DEFAULT].
     /// @param provider [ItemEvalProvider] implementation to add.
     @SuppressWarnings("unused")
     public static void register(@NotNull ItemEvalProvider<Entity, Integer> provider) {
