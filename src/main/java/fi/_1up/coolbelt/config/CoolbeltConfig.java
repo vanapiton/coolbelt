@@ -3,7 +3,7 @@ package fi._1up.coolbelt.config;
 import net.glasslauncher.mods.gcapi3.api.ConfigRoot;
 
 public class CoolbeltConfig {
-    @ConfigRoot(value = "config", visibleName = "Coolbelt Config", index = 1)
+    @ConfigRoot(value = "config", nameKey = "options.coolbelt.name", visibleName = "Coolbelt Config", index = 1)
     public final static CoolbeltConfigFields CONFIG = new CoolbeltConfigFields();
 
     // TODO: Make this update properly

@@ -65,4 +65,20 @@ public class CoolbeltConfigFields {
     )
     @ValueOnVanillaServer(booleanValue = TriBoolean.FALSE)
     public Boolean allowSlottingModdedTools = false;
+
+    @ConfigEntry(
+            nameKey = "config.coolbelt.leave_one_durability.name",
+            name = "Leave tools with one (1) durability",
+            descriptionKey = "config.coolbelt.leave_one_durability.desc",
+            description = "This only protects tools from being switched to, they could still break in the main hand."
+    )
+    public Boolean leaveOneDurability = false;
+
+    @ConfigEntry(
+            nameKey = "config.coolbelt.require_holding_ignore_key.name",
+            name = "Require holding the ignore keybind",
+            descriptionKey = "config.coolbelt.require_holding_ignore_key.desc",
+            description = "By default the ignore keybind acts as a toggle."
+    )
+    public Boolean requireHoldingIgnoreKey = false;
 }

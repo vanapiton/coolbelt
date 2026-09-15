@@ -14,7 +14,7 @@ public interface ToolAccessory extends Accessory {
     /// @param stack [ItemStack] representing the accessory.
     /// @return Original [ItemStack], or null if destroyed through damage.
     default ItemStack tickWhileWorn(PlayerEntity player, ItemStack stack) {
-        if(stack.isDamageable() && stack.getDamage() >= stack.getMaxDamage()) {
+        if(DurabilityChecker.isAtOrBelow(stack, 0)) {
             AccessoryAccess.removeAccessory(player, stack.getItem());
             ((ToolbeltInventory)player.inventory).coolbelt$setSelectedAccessory(null);
             return null;

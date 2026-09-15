@@ -49,6 +49,14 @@ public final class MiningSpeedRegistry {
             }
             return Optional.empty();
         });
+
+        // Durability saver
+        register(ItemEvalRegistry.PRIORITY_CRITICAL, (stack, block) -> {
+            if (CONFIG.leaveOneDurability && DurabilityChecker.isAtOrBelow(stack, 1)) {
+                return Optional.of(UNMINABLE);
+            }
+            return Optional.empty();
+        });
     }
 
     /// Private constructor to prevent instantiation.

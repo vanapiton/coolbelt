@@ -9,12 +9,14 @@
     "item.ShovelItemMixin",
     "item.SwordItemMixin",
     "item.ToolItemMixin",
+    "lang.TranslationStorageMixin",
     "player.PlayerInventoryMixin"
   ],
   "server": [
   ],
   "client": [
-    "gui.InGameHudMixin"
+    "gui.InGameHudMixin",
+    "option.GameOptionsMixin"
   ],
   "injectors": {
     "defaultRequire": 1

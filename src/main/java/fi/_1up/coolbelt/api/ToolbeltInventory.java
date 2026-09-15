@@ -15,4 +15,8 @@ public interface ToolbeltInventory extends Inventory {
     /// Sets the currently selected accessory [ItemStack].
     /// @param accessory Accessory [ItemStack] to select.
     void coolbelt$setSelectedAccessory(ItemStack accessory);
+
+    /// Fetches if the player's belt is being ignored at the moment.
+    /// @return Boolean indicating belt being ignored.
+    boolean coolbelt$isBeltIgnored();
 }

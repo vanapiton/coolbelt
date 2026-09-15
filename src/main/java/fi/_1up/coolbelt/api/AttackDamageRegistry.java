@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 import static fi._1up.coolbelt.Coolbelt.LOGGER;
+import static fi._1up.coolbelt.config.CoolbeltConfig.CONFIG;
 
 /// Registry managing attack damage evaluations for [ItemStack] instances against target [Entity] instances.
 /// Coolbelt will generally prefer the highest attack damage out of the evaluated providers.
@@ -30,6 +31,14 @@ public final class AttackDamageRegistry {
         register(ItemEvalRegistry.PRIORITY_VANILLA, (stack, target) -> {
             if (stack == null) return Optional.empty();
             return Optional.of(stack.getAttackDamage(target));
+        });
+
+        // Durability saver
+        register(ItemEvalRegistry.PRIORITY_CRITICAL, (stack, target) -> {
+            if (CONFIG.leaveOneDurability && DurabilityChecker.isAtOrBelow(stack, 1)) {
+                return Optional.of(UNDAMAGEABLE);
+            }
+            return Optional.empty();
         });
     }
 

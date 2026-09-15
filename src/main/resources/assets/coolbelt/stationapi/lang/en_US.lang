@@ -1,0 +1,46 @@
+# Keybinds
+key.coolbelt.ignore=Ignore Belt
+
+# Config options
+options.coolbelt.name="Coolbelt Options"
+
+options.coolbelt.is_slot_enabled.name=Toggle toolbelt slots §8(Requires restart)§r
+options.coolbelt.is_slot_enabled.desc=Determines which toolbelt slots are added; §8If none, §owhy do you have this mod?§r
+
+config.coolbelt.is_slot_enabled.sword.name=Enable sword slot §8(Requires restart)§r
+config.coolbelt.is_slot_enabled.pickaxe.name=Enable pickaxe slot §8(Requires restart)§r
+config.coolbelt.is_slot_enabled.axe.name=Enable axe slot §8(Requires restart)§r
+config.coolbelt.is_slot_enabled.shovel.name=Enable shovel slot §8(Requires restart)§r
+
+options.coolbelt.durability_hud.name=HUD options
+options.coolbelt.durability_hud.desc=Origin is on the middle hotbar slot.
+
+options.coolbelt.use_tool_for_zero_hardness.name=Use toolbelt for zero-hardness blocks
+options.coolbelt.use_tool_for_zero_hardness.desc=Looks cool when breaking grass with a sword, but wears it out...
+
+options.coolbelt.use_sword_for_mining.name=Use sword for mining
+options.coolbelt.use_sword_for_mining.desc=Uses the sword slot if it's the fastest, since in beta swords mine all blocks slightly faster.
+
+options.coolbelt.search_hotbar.name=Search hotbar
+options.coolbelt.search_hotbar.desc=Searches for tools in the hotbar as opposed to just the held item.
+
+options.coolbelt.slot_algorithm.name=Slot selection algorithm
+options.coolbelt.slot_algorithm.desc=Sets which slot is preferred when multiple slots have an appropriate tool.
+
+options.coolbelt.allow_slotting_modded_tools.name=Allow modded tools to slot into pickaxe, axe, and shovel slots
+options.coolbelt.allow_slotting_modded_tools.desc=Mainly intended for compatible mods that add paxels.
+
+options.coolbelt.leave_one_durability.name=Leave tools with one (1) durability
+options.coolbelt.leave_one_durability.desc=This only protects tools from being switched to, they could still break in the main hand.
+
+config.coolbelt.require_holding_ignore_key.name=Require holding the ignore keybind
+config.coolbelt.require_holding_ignore_key.desc=By default the ignore keybind acts as a toggle.
+
+options.coolbelt.hud.show.name=§lShow durability HUD§r
+options.coolbelt.hud.show.desc=Sets if durability indicators are shown next to the hotbar.
+
+options.coolbelt.hud.always_show_tools.name=§lAlways show tool durabilities§r
+options.coolbelt.hud.always_show_tools.desc=Sets if the durability indicator always shows all tools.
+
+options.coolbelt.hud.always_show_armor.name=§lAlways show armor durabilities§r
+options.coolbelt.hud.always_show_armor.desc=Sets if the durability indicator always shows armor. §8§oScope creep? Surely not!§r

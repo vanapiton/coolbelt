@@ -3,8 +3,10 @@ package fi._1up.coolbelt.mixin.player;
 import com.periut.accessoryapi.api.Accessory;
 import com.periut.accessoryapi.api.helper.AccessoryAccess;
 import fi._1up.coolbelt.api.AttackDamageRegistry;
+import fi._1up.coolbelt.api.DurabilityChecker;
 import fi._1up.coolbelt.api.MiningSpeedRegistry;
 import fi._1up.coolbelt.api.ToolbeltInventory;
+import fi._1up.coolbelt.config.KeyBindings;
 import fi._1up.coolbelt.config.SlotAlgorithm;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -12,10 +14,8 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
-import net.minecraft.item.ToolItem;
+import net.minecraft.item.*;
+import org.lwjgl.input.Keyboard;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -41,10 +41,22 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory {
     @Unique private ItemStack coolbelt$selectedAccessory = null;
     @Unique private static final int HOTBAR_SIZE = 9;
 
+    @Unique private boolean ignoreBelt = false;
+    @Unique private boolean wasIgnoreKeyDown = false;
+
     @Inject(method = "inventoryTick", at = @At("HEAD"))
     private void inventoryTick(CallbackInfo ci) {
-        if(!player.handSwinging) {
+        if (!player.handSwinging) {
             coolbelt$setSelectedAccessory(null);
+        }
+
+        boolean isIgnoreKeyDown = Keyboard.isKeyDown(KeyBindings.IGNORE.code);
+        if (CONFIG.requireHoldingIgnoreKey) ignoreBelt = isIgnoreKeyDown;
+        else {
+            if (isIgnoreKeyDown && !wasIgnoreKeyDown) {
+                ignoreBelt = !ignoreBelt;
+            }
+            wasIgnoreKeyDown = isIgnoreKeyDown;
         }
     }
 
@@ -82,7 +94,7 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory {
     private boolean isTool(ItemStack stack) {
         if (stack == null) return false;
         Item item = stack.getItem();
-        return item instanceof ToolItem || item instanceof SwordItem;
+        return item instanceof ToolItem || item instanceof SwordItem || item instanceof ShearsItem;
     }
 
     @Unique
@@ -145,6 +157,8 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory {
 
     @Inject(method = "getAttackDamage", at = @At("HEAD"), cancellable = true)
     private void getAttackDamage(Entity target, CallbackInfoReturnable<Integer> cir) {
+        if (ignoreBelt) return;
+
         ToolSelectionResult result = processToolSelection(
             stack -> AttackDamageRegistry.getDamage(stack, target),
             STANDARD_ATTACK_DAMAGE,
@@ -165,6 +179,7 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory {
 
     @Inject(method = "getStrengthOnBlock", at = @At("HEAD"), cancellable = true)
     private void getStrengthOnBlock(Block block, CallbackInfoReturnable<Float> cir) {
+        if (ignoreBelt) return;
         if (shouldSkipZeroHardnessBlock(block)) return;
 
         ToolSelectionResult result = processToolSelection(
@@ -181,6 +196,7 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory {
 
     @Inject(method = "isUsingEffectiveTool", at = @At("HEAD"), cancellable = true)
     private void isUsingEffectiveTool(Block block, CallbackInfoReturnable<Boolean> cir) {
+        if (ignoreBelt) return;
         if (CONFIG.searchHotbar || CONFIG.slotAlgorithm == SlotAlgorithm.ALWAYS_PREFER_HOTBAR_TOOL) {
             for (int slot = 0; slot < HOTBAR_SIZE; slot++) {
                 ItemStack stack = main[slot];
@@ -202,11 +218,23 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory {
 
     @Override
     public ItemStack coolbelt$getSelectedAccessory() {
+        if (ignoreBelt) return null;
+
+        // Durability saver
+        if (CONFIG.leaveOneDurability && DurabilityChecker.isAtOrBelow(coolbelt$selectedAccessory, 1)) {
+            return null;
+        }
+
         return coolbelt$selectedAccessory;
     }
 
     @Override
     public void coolbelt$setSelectedAccessory(ItemStack accessory) {
         coolbelt$selectedAccessory = accessory;
+    }
+
+    @Override
+    public boolean coolbelt$isBeltIgnored() {
+        return ignoreBelt;
     }
 }

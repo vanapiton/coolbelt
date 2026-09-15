@@ -1,6 +1,7 @@
 package fi._1up.coolbelt.api;
 
 import com.periut.accessoryapi.api.helper.AccessoryAccess;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
@@ -57,6 +58,34 @@ public final class DurabilityHudRegistry {
                 CONFIG.hud.armorsOffsetY,
                 CONFIG.hud.armorStepX,
                 CONFIG.hud.armorStepY
+        );
+
+        // Hacky ignore overlay
+        register(
+                player -> {
+                    ToolbeltInventory inv = ((ToolbeltInventory) player.inventory);
+                    if(!inv.coolbelt$isBeltIgnored()) return Collections.emptyList();
+
+                    ItemStack overlayStack = new ItemStack(Block.COBWEB);
+
+                    if (!CONFIG.hud.alwaysShowTools) {
+                        return Collections.singletonList(overlayStack);
+                    }
+
+                    List<ItemStack> stacks = new ArrayList<>();
+
+                    for (ToolSlot slot : ToolSlot.SLOTS) {
+                        if (!slot.enabled()) continue;
+
+                        Collections.addAll(stacks, overlayStack);
+                    }
+
+                    return stacks;
+                },
+                CONFIG.hud.toolsOffsetX,
+                CONFIG.hud.toolsOffsetY,
+                CONFIG.hud.toolStepX,
+                CONFIG.hud.toolStepY
         );
     }
 

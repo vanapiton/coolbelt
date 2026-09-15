@@ -13,11 +13,10 @@ and allows you to choose from several options for deciding which tool to use whe
 This mod requires the following in order to function:
 
 - **Babric**
-- **Accessory API**
+- **Accessory API** `0.9.0` or later
 - Optionally, to access Coolbelt's and Accessory API's options:
   - **Glass Config API**
   - **Mod Menu Babric**
-
 
 ## Installation
 
@@ -28,7 +27,7 @@ This mod requires the following in order to function:
 
 ## Compatibility
 
-Mixes into `PlayerInventory`, `InGameHud`, `ToolItem`, `AxeItem`, `PickaxeItem`, `ShovelItem`, `SwordItem`.
+Mixes into `PlayerInventory`, `InGameHud`, `GameOptions`. `TranslationStorage`, `ToolItem`, `AxeItem`, `PickaxeItem`, `ShovelItem`, `SwordItem`.
 
 ## API
 

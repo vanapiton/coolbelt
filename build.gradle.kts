@@ -1,6 +1,6 @@
 plugins {
-	id("fabric-loom") version "1.16.3"
-	id("babric-loom-extension") version "1.15.3"
+	id("fabric-loom") version "1.17.2"
+	id("babric-loom-extension") version "1.16.1"
 }
 
 // Helper function to get Gradle properties
@@ -81,6 +81,8 @@ dependencies {
 	modImplementation("net.danygames2014:modmenu:${prop("modmenu_version")}")
 	// https://github.com/Glass-Series/Always-More-Items
 	modImplementation("net.glasslauncher.mods:AlwaysMoreItems:${prop("alwaysmoreitems_version")}")
+	// https://github.com/DanyGames2014/UniTweaks
+	modImplementation("maven.modrinth:unitweaks:${prop("unitweaks_version")}")
 }
 
 configurations.all {

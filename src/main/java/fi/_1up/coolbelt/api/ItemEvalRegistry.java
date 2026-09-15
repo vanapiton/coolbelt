@@ -21,8 +21,10 @@ public abstract class ItemEvalRegistry<T, R> {
     public static final int PRIORITY_VANILLA = 400;
     /// Default priority level for registered providers, higher than [PRIORITY_VANILLA].
     public static final int PRIORITY_DEFAULT = 500;
-    /// Highest priority level, higher than [PRIORITY_DEFAULT].
+    /// High priority level, higher than [PRIORITY_DEFAULT].
     public static final int PRIORITY_HIGH = 1000;
+    /// Highest priority level, higher than [PRIORITY_HIGH].
+    public static final int PRIORITY_CRITICAL = 1500;
 
     /// [List] of registered [ItemEvalProvider] entries ordered by priority.
     private final List<PrioritizedEntry<T, R>> providers = new CopyOnWriteArrayList<>();
