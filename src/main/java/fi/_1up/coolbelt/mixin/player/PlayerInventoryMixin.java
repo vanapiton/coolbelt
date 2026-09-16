@@ -45,6 +45,7 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory {
     @Unique private boolean wasIgnoreKeyDown = false;
 
     @Inject(method = "inventoryTick", at = @At("HEAD"))
+    @Environment(EnvType.CLIENT)
     private void inventoryTick(CallbackInfo ci) {
         if (!player.handSwinging) {
             coolbelt$setSelectedAccessory(null);
