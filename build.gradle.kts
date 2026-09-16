@@ -121,6 +121,6 @@ java {
 
 tasks.withType<Jar>().configureEach {
 	from("LICENSE") {
-		rename { "${it}_${base.archivesName}" }
+		rename { "${it}_${prop("archives_base_name")}" }
 	}
 }
