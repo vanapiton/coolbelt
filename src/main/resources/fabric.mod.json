@@ -38,7 +38,7 @@
 
   "depends": {
     "minecraft": "1.0.0-beta.7.3",
-    "accessoryapi": ">=0.9.0"
+    "accessoryapi": ">=0.8.1"
   },
   "suggests": {
     "gcapi3": "*",

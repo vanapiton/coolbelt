@@ -1,7 +1,6 @@
 package fi._1up.coolbelt.api;
 
 import com.periut.accessoryapi.api.Accessory;
-import com.periut.accessoryapi.api.helper.AccessoryAccess;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
@@ -15,7 +14,6 @@ public interface ToolAccessory extends Accessory {
     /// @return Original [ItemStack], or null if destroyed through damage.
     default ItemStack tickWhileWorn(PlayerEntity player, ItemStack stack) {
         if(DurabilityChecker.isAtOrBelow(stack, 0)) {
-            AccessoryAccess.removeAccessory(player, stack.getItem());
             ((ToolbeltInventory)player.inventory).coolbelt$setSelectedAccessory(null);
             return null;
         }

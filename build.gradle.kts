@@ -83,6 +83,8 @@ dependencies {
 	modImplementation("net.glasslauncher.mods:AlwaysMoreItems:${prop("alwaysmoreitems_version")}")
 	// https://github.com/DanyGames2014/UniTweaks
 	modImplementation("maven.modrinth:unitweaks:${prop("unitweaks_version")}")
+	// https://github.com/Kaosreven/Paxels
+	modImplementation("maven.modrinth:paxels-stationapi:${prop("paxels_version")}")
 }
 
 configurations.all {

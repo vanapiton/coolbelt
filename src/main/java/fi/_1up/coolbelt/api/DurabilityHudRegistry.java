@@ -1,6 +1,7 @@
 package fi._1up.coolbelt.api;
 
 import com.periut.accessoryapi.api.helper.AccessoryAccess;
+import fi._1up.coolbelt.compat.ModVersionChecker;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -35,9 +36,18 @@ public final class DurabilityHudRegistry {
                     for (ToolSlot slot : ToolSlot.SLOTS) {
                         if (!slot.enabled()) continue;
 
-                        int slotIndex = AccessoryAccess.getAccessoryInventory(player).getSlotFor(slot.key(), 0);
-                        ItemStack accessory = AccessoryAccess.getAccessory(player, slotIndex);
-                        Collections.addAll(stacks, accessory);
+                        ItemStack accessory;
+                        if(ModVersionChecker.isAtLeast("accessoryapi", "0.9.0")) {
+                            int slotIndex = AccessoryAccess.getAccessoryInventory(player).getSlotFor(slot.key(), 0);
+                            accessory = AccessoryAccess.getAccessory(player, slotIndex);
+                        } else {
+                            // Hacky solution for Accessory API versions prior to 0.9.0
+                            // Shows duplicates of tools with multiple valid slots, not ideal
+                            ItemStack[] accessories = AccessoryAccess.getAccessories(player, slot.key());
+                            accessory = accessories.length > 0 ? accessories[0] : null;
+                        }
+
+                        stacks.add(accessory);
                     }
 
                     return stacks;

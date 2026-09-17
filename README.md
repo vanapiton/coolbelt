@@ -13,7 +13,7 @@ and allows you to choose from several options for deciding which tool to use whe
 This mod requires the following in order to function:
 
 - **Babric**
-- **Accessory API** `0.9.0` or later
+- **Accessory API** `0.8.1` or later
 - Optionally, to access Coolbelt's and Accessory API's options:
   - **Glass Config API**
   - **Mod Menu Babric**
@@ -28,6 +28,17 @@ This mod requires the following in order to function:
 ## Compatibility
 
 Mixes into `PlayerInventory`, `InGameHud`, `GameOptions`. `TranslationStorage`, `ToolItem`, `AxeItem`, `PickaxeItem`, `ShovelItem`, `SwordItem`.
+
+### Known Issues
+
+The controls menu gets crowded when other mods also add keybinds.\
+**Solution:** Install a mod that implements a scrollable controls screen.
+
+With Accessory API versions lower than `0.9.0`, some HUD elements list items incorrectly.\
+**Solution:** Upgrade to a newer version, or disable "Always show tool durabilities" and "Always show armor durabilities".
+
+Inventory operations from other mods are offset by the amount of slots added to Accessory API.\
+**Solution:** Check if the affected mod offers a compatibility patch or option.
 
 ## API
 
