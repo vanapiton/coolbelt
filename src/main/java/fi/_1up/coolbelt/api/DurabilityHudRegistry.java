@@ -62,7 +62,7 @@ public final class DurabilityHudRegistry {
         register(
                 player -> {
                     if (!CONFIG.hud.alwaysShowArmors) return Collections.emptyList();
-                    return Arrays.stream(player.inventory.armor).toList();
+                    return Arrays.stream(player.inventory.armor).toList().subList(0, 4);
                 },
                 CONFIG.hud.armorsOffsetX,
                 CONFIG.hud.armorsOffsetY,

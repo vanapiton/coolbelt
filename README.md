@@ -12,11 +12,11 @@ and allows you to choose from several options for deciding which tool to use whe
 
 This mod requires the following in order to function:
 
-- **Babric**
-- **Accessory API** `0.8.1` or later
+- [Babric](https://github.com/babric/prism-instance)
+- [Accessory API `>=0.8.1`](https://modrinth.com/mod/K9k9gNxR)
 - Optionally, to access Coolbelt's and Accessory API's options:
-  - **Glass Config API**
-  - **Mod Menu Babric**
+  - [Glass Config API](https://modrinth.com/mod/rFeWTq4G)
+  - [Mod Menu Babric](https://modrinth.com/mod/vf3X9pHM)
 
 ## Installation
 
@@ -35,7 +35,7 @@ The controls menu gets crowded when other mods also add keybinds.\
 **Solution:** Install a mod that implements a scrollable controls screen.
 
 With Accessory API versions lower than `0.9.0`, some HUD elements list items incorrectly.\
-**Solution:** Upgrade to a newer version, or disable "Always show tool durabilities" and "Always show armor durabilities".
+**Solution:** Upgrade to a newer version, or disable "Always show tool durabilities".
 
 Inventory operations from other mods are offset by the amount of slots added to Accessory API.\
 **Solution:** Check if the affected mod offers a compatibility patch or option.
