@@ -25,7 +25,7 @@ public class TranslationStorageMixin {
             try {
                 translations.load(TranslationStorage.class.getResourceAsStream(TRANSLATIONS_PATH));
             } catch (IOException err) {
-                LOGGER.error("Failed to load Coolbelt translations: %s", err.getMessage());
+                LOGGER.error("Failed to load translations: %s", err.getMessage());
             }
         }
     }

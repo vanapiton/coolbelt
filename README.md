@@ -27,7 +27,7 @@ This mod requires the following in order to function:
 
 ## Compatibility
 
-Mixes into `PlayerInventory`, `InGameHud`, `GameOptions`. `TranslationStorage`, `ToolItem`, `AxeItem`, `PickaxeItem`, `ShovelItem`, `SwordItem`.
+Mixes into `PlayerInventory`, `TextureManager`, `InGameHud`, `GameOptions`. `TranslationStorage`, `ToolItem`, `AxeItem`, `PickaxeItem`, `ShovelItem`, `SwordItem`.
 
 ### Known Issues
 

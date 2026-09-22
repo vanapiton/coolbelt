@@ -15,8 +15,9 @@
   "server": [
   ],
   "client": [
-    "gui.InGameHudMixin",
-    "option.GameOptionsMixin"
+    "client.gui.InGameHudMixin",
+    "client.option.GameOptionsMixin",
+    "client.texture.TextureManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

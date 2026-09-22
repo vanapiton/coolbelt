@@ -56,6 +56,8 @@ dependencies {
 
 	implementation("org.apache.logging.log4j:log4j-core:2.17.2")
 
+	implementation("org.apache.commons:commons-lang3:3.12.0")
+
 	implementation("org.slf4j:slf4j-api:1.8.0-beta4")
 	implementation("org.apache.logging.log4j:log4j-slf4j18-impl:2.17.1")
 
