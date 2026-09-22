@@ -12,8 +12,8 @@ config.coolbelt.is_slot_enabled.pickaxe.name=Enable pickaxe slot §8(Requires re
 config.coolbelt.is_slot_enabled.axe.name=Enable axe slot §8(Requires restart)§r
 config.coolbelt.is_slot_enabled.shovel.name=Enable shovel slot §8(Requires restart)§r
 
-options.coolbelt.durability_hud.name=HUD options
-options.coolbelt.durability_hud.desc=Origin is on the middle hotbar slot.
+options.coolbelt.hud.name=HUD options
+options.coolbelt.hud.desc=Origin is on the middle hotbar slot.
 
 options.coolbelt.use_tool_for_zero_hardness.name=Use toolbelt for zero-hardness blocks
 options.coolbelt.use_tool_for_zero_hardness.desc=Looks cool when breaking grass with a sword, but wears it out...
@@ -36,8 +36,11 @@ options.coolbelt.leave_one_durability.desc=This only protects tools from being s
 config.coolbelt.require_holding_ignore_key.name=Require holding the ignore keybind
 config.coolbelt.require_holding_ignore_key.desc=By default the ignore keybind acts as a toggle.
 
-options.coolbelt.hud.show.name=§lShow durability HUD§r
-options.coolbelt.hud.show.desc=Sets if durability indicators are shown next to the hotbar.
+config.coolbelt.hud.generate_outlines.name=§lGenerate slot placeholder outlines on-the-fly§r
+config.coolbelt.hud.generate_outlines.desc=Only looks good on 16x16 texture packs. If false, loads a fallback texture instead,
+
+options.coolbelt.hud.show_durabilities.name=§lShow durability HUD§r
+options.coolbelt.hud.show_durabilities.desc=Sets if durability indicators are shown next to the hotbar.
 
 options.coolbelt.hud.always_show_tools.name=§lAlways show tool durabilities§r
 options.coolbelt.hud.always_show_tools.desc=Sets if the durability indicator always shows all tools.
