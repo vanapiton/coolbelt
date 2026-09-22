@@ -63,7 +63,7 @@ public abstract class TextureManagerMixin {
             Map.Entry entry = (Map.Entry) iterator.next();
             String key = (String) entry.getKey();
 
-            if (key != null && key.startsWith(VirtualTextureRegistry.VIRTUAL_ASSET_PATH)) {
+            if (key != null && key.startsWith(VIRTUAL_ASSET_PATH)) {
                 Integer glTextureId = (Integer) entry.getValue();
                 if (glTextureId != null && glTextureId > 0) {
                     GL11.glDeleteTextures(glTextureId);
