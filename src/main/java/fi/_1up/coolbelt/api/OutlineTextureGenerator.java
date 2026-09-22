@@ -16,13 +16,12 @@ import static fi._1up.coolbelt.Coolbelt.LOGGER;
 /// Generates outline textures from items in the item atlas. Supports 16x16 texture packs.
 @ApiStatus.Experimental
 public class OutlineTextureGenerator {
-    private static final int TILE_SIZE = 16;
-    private static final int TEXTURE_SIZE = TILE_SIZE * 16;
+    private static final int ATLAS_GRID_SIZE = 16;
 
     private static final int OUTLINE_ARGB = 0xFF5F5F5F;
-    private static final double DARKNESS_THRESHOLD = 100.0;
+    private static final double DARKNESS_THRESHOLD = 100;
 
-    private static final int[][] DIRECTIONS = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    private static final int[][] NEIGHBORS = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
     private OutlineTextureGenerator() {}
 
@@ -31,9 +30,40 @@ public class OutlineTextureGenerator {
     /// @return The generated [BufferedImage], or null if generation fails.
     public static BufferedImage generateImage(@NotNull Item item) {
         int textureId = item.getTextureId(0);
-        int atlasX = textureId % TILE_SIZE;
-        int atlasY = textureId / TILE_SIZE;
+
+        int atlasX = textureId % ATLAS_GRID_SIZE;
+        int atlasY = textureId / ATLAS_GRID_SIZE;
         return generateImage(atlasX, atlasY);
+    }
+
+    @Nullable
+    private static BufferedImage getItemAtlas() {
+        @SuppressWarnings("deprecation")
+        Minecraft mc = (Minecraft) FabricLoader.getInstance().getGameInstance();
+
+        if (mc.texturePacks == null || mc.texturePacks.selected == null) {
+            LOGGER.error("Failed to get texture pack.");
+            return null;
+        }
+
+        BufferedImage itemAtlas = null;
+
+        try (InputStream stream = mc.texturePacks.selected.getResource("/gui/items.png")) {
+            if (stream == null) {
+                LOGGER.error("Failed to get texture pack /gui/items.png input stream.");
+                return null;
+            }
+
+            itemAtlas = ImageIO.read(stream);
+            if (itemAtlas == null) {
+                LOGGER.error("Failed to get item atlas.");
+                return null;
+            }
+        } catch (Exception err) {
+            LOGGER.error("Failed to get item atlas: %s", err.getMessage());
+        }
+
+        return itemAtlas;
     }
 
     /// Generates an outline image for a specific tile coordinate within the item atlas.
@@ -44,65 +74,44 @@ public class OutlineTextureGenerator {
     public static BufferedImage generateImage(int atlasX, int atlasY) {
         LOGGER.info("Trying to generate outline from (%d, %d).", atlasX, atlasY);
 
-        @SuppressWarnings("deprecation")
-        Minecraft mc = (Minecraft) FabricLoader.getInstance().getGameInstance();
+        BufferedImage itemAtlas = getItemAtlas();
+        if(itemAtlas == null) return null;
 
-        if (mc.texturePacks == null || mc.texturePacks.selected == null) {
-            LOGGER.error("Failed to get texture pack.");
-            return null;
-        }
+        int tileSize = itemAtlas.getWidth() / ATLAS_GRID_SIZE;
 
-        try (InputStream stream = mc.texturePacks.selected.getResource("/gui/items.png")) {
-            if(stream == null) {
-                LOGGER.error("Failed to get texture pack /gui/items.png input stream.");
-                return null;
-            }
+        int startX = atlasX * tileSize;
+        int startY = atlasY * tileSize;
 
-            BufferedImage itemAtlas = ImageIO.read(stream);
-            if(itemAtlas == null) {
-                LOGGER.error("Failed to get item atlas.");
-                return null;
-            }
+        int[] pixels = new int[tileSize * tileSize];
+        itemAtlas.getRGB(startX, startY, tileSize, tileSize, pixels, 0, tileSize);
 
-            int startX = atlasX * TILE_SIZE;
-            int startY = atlasY * TILE_SIZE;
+        BufferedImage outline = new BufferedImage(itemAtlas.getWidth(), itemAtlas.getHeight(), BufferedImage.TYPE_INT_ARGB);
 
-            int[] pixels = new int[TILE_SIZE * TILE_SIZE];
-            itemAtlas.getRGB(startX, startY, TILE_SIZE, TILE_SIZE, pixels, 0, TILE_SIZE);
+        for (int y = 0; y < tileSize; y++) {
+            for (int x = 0; x < tileSize; x++) {
+                int argb = pixels[y * tileSize + x];
 
-            BufferedImage outline = new BufferedImage(TEXTURE_SIZE, TEXTURE_SIZE, BufferedImage.TYPE_INT_ARGB);
+                if (isTransparent(argb)) continue;
 
-            for (int y = 0; y < TILE_SIZE; y++) {
-                for (int x = 0; x < TILE_SIZE; x++) {
-                    int argb = pixels[y * TILE_SIZE + x];
-
-                    if (isTransparent(argb)) continue;
-
-                    if (isOutlinePixel(pixels, x, y, argb)) {
-                        outline.setRGB(x, y, OUTLINE_ARGB);
-                    }
+                if (isOutlinePixel(pixels, x, y, argb, tileSize)) {
+                    outline.setRGB(x, y, OUTLINE_ARGB);
                 }
             }
-
-            return outline;
-        } catch (IllegalArgumentException err) {
-            LOGGER.error("ImageIO received null input during texture pack reload: %s", err.getMessage());
-        } catch (Exception err) {
-            LOGGER.error("Failed to generate outline from (%s, %s): %s", atlasX, atlasY, err.getMessage());
         }
-        return null;
+
+        return outline;
     }
 
-    private static boolean isOutlinePixel(int[] pixels, int x, int y, int currentArgb) {
+    private static boolean isOutlinePixel(int[] pixels, int x, int y, int currentArgb, int tileSize) {
         double currentLuminance = calculateLuminance(currentArgb);
 
-        for (int[] dir : DIRECTIONS) {
-            int nx = x + dir[0];
-            int ny = y + dir[1];
+        for (int[] neighbor : NEIGHBORS) {
+            int nx = x + neighbor[0];
+            int ny = y + neighbor[1];
 
-            if (nx < 0 || nx >= TILE_SIZE || ny < 0 || ny >= TILE_SIZE) return true;
+            if (nx < 0 || nx >= tileSize || ny < 0 || ny >= tileSize) return true;
 
-            int neighborArgb = pixels[ny * TILE_SIZE + nx];
+            int neighborArgb = pixels[ny * tileSize + nx];
             if (isTransparent(neighborArgb)) return true;
 
             double neighborLuminance = calculateLuminance(neighborArgb);

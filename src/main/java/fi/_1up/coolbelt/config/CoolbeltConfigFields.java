@@ -17,9 +17,9 @@ public class CoolbeltConfigFields {
     public CoolbeltConfigSlotToggles isSlotEnabled = new CoolbeltConfigSlotToggles();
 
     @ConfigCategory(
-            nameKey = "config.coolbelt.durability_hud.name",
+            nameKey = "config.coolbelt.hud.name",
             name = "HUD options",
-            descriptionKey = "config.coolbelt.durability_hud.desc",
+            descriptionKey = "config.coolbelt.hud.desc",
             description = "Origin is on the middle hotbar slot."
     )
     public CoolbeltConfigHud hud = new CoolbeltConfigHud();

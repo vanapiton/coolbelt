@@ -5,12 +5,21 @@ import net.glasslauncher.mods.gcapi3.api.ConfigEntry;
 @SuppressWarnings("CanBeFinal")
 public class CoolbeltConfigHud {
     @ConfigEntry(
-            nameKey = "config.coolbelt.hud.show.name",
+            nameKey = "config.coolbelt.hud.generate_outlines.name",
+            name = "§lGenerate slot placeholder outlines on-the-fly§r",
+            descriptionKey = "config.coolbelt.generate_outlines.desc",
+            description = "Only looks good on 16x16 texture packs. If false, loads a fallback texture instead,",
+            requiresRestart = true
+    )
+    public Boolean generateOutlines = true;
+
+    @ConfigEntry(
+            nameKey = "config.coolbelt.hud.show_durabilities.name",
             name = "§lShow durability HUD§r",
-            descriptionKey = "config.coolbelt.hud.show.desc",
+            descriptionKey = "config.coolbelt.hud.show_durabilies.desc",
             description = "Sets if durability indicators are shown next to the hotbar."
     )
-    public Boolean showDurabilityHUD = true;
+    public Boolean showDurabilities = true;
 
     @ConfigEntry(
             nameKey = "config.coolbelt.hud.always_show_tools.name",
