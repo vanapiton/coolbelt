@@ -3,6 +3,7 @@ package fi._1up.coolbelt.api;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,6 +14,7 @@ import java.io.InputStream;
 import static fi._1up.coolbelt.Coolbelt.LOGGER;
 
 /// Generates outline textures from items in the item atlas. Supports 16x16 texture packs.
+@ApiStatus.Experimental
 public class OutlineTextureGenerator {
     private static final int TILE_SIZE = 16;
     private static final int TEXTURE_SIZE = TILE_SIZE * 16;
