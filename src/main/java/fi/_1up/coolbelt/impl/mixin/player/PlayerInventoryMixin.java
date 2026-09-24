@@ -1,4 +1,4 @@
-package fi._1up.coolbelt.mixin.player;
+package fi._1up.coolbelt.impl.mixin.player;
 
 import com.periut.accessoryapi.api.Accessory;
 import com.periut.accessoryapi.api.helper.AccessoryAccess;

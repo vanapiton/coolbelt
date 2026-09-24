@@ -23,7 +23,7 @@
       "fi._1up.coolbelt.Coolbelt"
     ],
     "stationapi:event_bus": [
-      "fi._1up.coolbelt.compat.stationapi.StationAPICompat"
+      "fi._1up.coolbelt.impl.compat.stationapi.StationAPICompat"
     ],
     "gcapi3": [
       "fi._1up.coolbelt.config.CoolbeltConfig"

@@ -1,7 +1,7 @@
 package fi._1up.coolbelt.api;
 
 import com.periut.accessoryapi.api.helper.AccessoryAccess;
-import fi._1up.coolbelt.compat.ModVersionChecker;
+import fi._1up.coolbelt.impl.compat.ModVersionChecker;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;

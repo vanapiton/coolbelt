@@ -1,4 +1,4 @@
-package fi._1up.coolbelt.compat;
+package fi._1up.coolbelt.impl.compat;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;

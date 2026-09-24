@@ -1,4 +1,4 @@
-package fi._1up.coolbelt.mixin.client.option;
+package fi._1up.coolbelt.impl.mixin.client.option;
 
 import fi._1up.coolbelt.config.KeyBindings;
 import net.minecraft.client.Minecraft;

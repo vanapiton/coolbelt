@@ -1,4 +1,4 @@
-package fi._1up.coolbelt.mixin.lang;
+package fi._1up.coolbelt.impl.mixin.lang;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.resource.language.TranslationStorage;

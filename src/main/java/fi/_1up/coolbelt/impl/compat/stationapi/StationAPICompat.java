@@ -1,4 +1,4 @@
-package fi._1up.coolbelt.compat.stationapi;
+package fi._1up.coolbelt.impl.compat.stationapi;
 
 import fi._1up.coolbelt.api.MiningSpeedRegistry;
 import net.mine_diver.unsafeevents.listener.EventListener;

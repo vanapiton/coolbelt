@@ -1,4 +1,4 @@
-package fi._1up.coolbelt.mixin.client.gui;
+package fi._1up.coolbelt.impl.mixin.client.gui;
 
 import fi._1up.coolbelt.api.DurabilityHudGroup;
 import fi._1up.coolbelt.api.DurabilityHudRegistry;

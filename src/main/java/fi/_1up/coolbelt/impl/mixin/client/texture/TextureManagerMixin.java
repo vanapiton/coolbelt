@@ -1,4 +1,4 @@
-package fi._1up.coolbelt.mixin.client.texture;
+package fi._1up.coolbelt.impl.mixin.client.texture;
 
 import fi._1up.coolbelt.api.VirtualTextureRegistry;
 import net.minecraft.client.texture.TextureManager;
