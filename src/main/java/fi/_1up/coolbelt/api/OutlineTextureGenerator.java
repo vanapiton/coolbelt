@@ -1,5 +1,6 @@
 package fi._1up.coolbelt.api;
 
+import fi._1up.coolbelt.impl.SauvolaThreshold;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
@@ -17,11 +18,13 @@ import static fi._1up.coolbelt.Coolbelt.LOGGER;
 @ApiStatus.Experimental
 public class OutlineTextureGenerator {
     private static final int ATLAS_GRID_SIZE = 16;
+    private static final int BASE_TILE_SIZE = 16;
 
-    private static final int OUTLINE_ARGB = 0xFF5F5F5F;
-    private static final double DARKNESS_THRESHOLD = 100;
+    private static final int OUTLINE_RGB = 0x5F5F5F;
+    private static final double ALPHA_THRESHOLD = 128;
 
-    private static final int[][] NEIGHBORS = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    private static final double SAUVOLA_K = 0.4;
+    private static final double SAUVOLA_R = 128;
 
     private OutlineTextureGenerator() {}
 
@@ -30,10 +33,7 @@ public class OutlineTextureGenerator {
     /// @return The generated [BufferedImage], or null if generation fails.
     public static BufferedImage generateImage(@NotNull Item item) {
         int textureId = item.getTextureId(0);
-
-        int atlasX = textureId % ATLAS_GRID_SIZE;
-        int atlasY = textureId / ATLAS_GRID_SIZE;
-        return generateImage(atlasX, atlasY);
+        return generateImage(textureId % ATLAS_GRID_SIZE, textureId / ATLAS_GRID_SIZE);
     }
 
     @Nullable
@@ -77,15 +77,16 @@ public class OutlineTextureGenerator {
         BufferedImage itemAtlas = getItemAtlas();
         if(itemAtlas == null) return null;
 
-        int tileSize = itemAtlas.getWidth() / ATLAS_GRID_SIZE;
+        int atlasWidth = itemAtlas.getWidth();
+        int atlasHeight = itemAtlas.getHeight();
 
-        int startX = atlasX * tileSize;
-        int startY = atlasY * tileSize;
+        int tileSize = atlasWidth / ATLAS_GRID_SIZE;
+        int windowRadius = Math.max(1, tileSize / BASE_TILE_SIZE);
 
-        int[] pixels = new int[tileSize * tileSize];
-        itemAtlas.getRGB(startX, startY, tileSize, tileSize, pixels, 0, tileSize);
+        BufferedImage outline = itemAtlas.getSubimage(atlasX * tileSize, atlasY * tileSize, tileSize, tileSize);
+        SauvolaThreshold.mutate(outline, windowRadius, SAUVOLA_K, SAUVOLA_R);
 
-        BufferedImage outline = new BufferedImage(itemAtlas.getWidth(), itemAtlas.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        int[] pixels = outline.getRGB(0, 0, tileSize, tileSize, null, 0, tileSize);
 
         for (int y = 0; y < tileSize; y++) {
             for (int x = 0; x < tileSize; x++) {
@@ -93,41 +94,34 @@ public class OutlineTextureGenerator {
 
                 if (isTransparent(argb)) continue;
 
-                if (isOutlinePixel(pixels, x, y, argb, tileSize)) {
-                    outline.setRGB(x, y, OUTLINE_ARGB);
+                boolean isThresholded = (argb & 0x00FFFFFF) == 0;
+
+                if (isThresholded || isEdge(pixels, x, y, tileSize)) {
+                    outline.setRGB(x, y, argb & 0xFF000000 | OUTLINE_RGB);
+                }
+                else {
+                    outline.setRGB(x, y, 0);
                 }
             }
         }
 
-        return outline;
+        BufferedImage outputAtlas = new BufferedImage(atlasWidth, atlasHeight, BufferedImage.TYPE_INT_ARGB);
+        int[] processedTilePixels = outline.getRGB(0, 0, tileSize, tileSize, null, 0, tileSize);
+        outputAtlas.setRGB(0, 0, tileSize, tileSize, processedTilePixels, 0, tileSize);
+
+        return outputAtlas;
     }
 
-    private static boolean isOutlinePixel(int[] pixels, int x, int y, int currentArgb, int tileSize) {
-        double currentLuminance = calculateLuminance(currentArgb);
+    private static boolean isEdge(int[] pixels, int x, int y, int tileSize) {
+        if (x == 0 || x == tileSize - 1 || y == 0 || y == tileSize - 1) return true;
 
-        for (int[] neighbor : NEIGHBORS) {
-            int nx = x + neighbor[0];
-            int ny = y + neighbor[1];
-
-            if (nx < 0 || nx >= tileSize || ny < 0 || ny >= tileSize) return true;
-
-            int neighborArgb = pixels[ny * tileSize + nx];
-            if (isTransparent(neighborArgb)) return true;
-
-            double neighborLuminance = calculateLuminance(neighborArgb);
-            if ((neighborLuminance - currentLuminance) >= DARKNESS_THRESHOLD) return true;
-        }
-        return false;
+        return isTransparent(pixels[y * tileSize + (x - 1)])
+                || isTransparent(pixels[y * tileSize + (x + 1)])
+                || isTransparent(pixels[(y - 1) * tileSize + x])
+                || isTransparent(pixels[(y + 1) * tileSize + x]);
     }
 
     private static boolean isTransparent(int argb) {
-        return ((argb >> 24) & 0xFF) <= 0;
-    }
-
-    private static double calculateLuminance(int argb) {
-        int r = (argb >> 16) & 0xFF;
-        int g = (argb >> 8) & 0xFF;
-        int b = argb & 0xFF;
-        return (0.2126 * r) + (0.7152 * g) + (0.0722 * b);
+        return ((argb >> 24) & 0xFF) < ALPHA_THRESHOLD;
     }
 }
