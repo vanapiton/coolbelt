@@ -1,7 +1,7 @@
 package fi._1up.coolbelt;
 
 import com.periut.accessoryapi.api.AccessoryRegister;
-import fi._1up.coolbelt.api.OutlineTextureGenerator;
+import fi._1up.coolbelt.api.SlotAtlas;
 import fi._1up.coolbelt.api.ToolSlot;
 import fi._1up.coolbelt.api.VirtualTextureRegistry;
 import net.fabricmc.api.ModInitializer;
@@ -15,24 +15,19 @@ public class Coolbelt implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        String texturePath;
+        if(CONFIG.hud.generateOutlines) {
+            texturePath = VirtualTextureRegistry.register("slots.png", SlotAtlas::generate);
+        } else {
+            texturePath = "/assets/coolbelt/textures/slot/slots.png";
+        }
+
         for (ToolSlot slot : ToolSlot.SLOTS) {
             if(!slot.enabled()) continue;
 
-            String texturePath;
-            int texX = 0;
-            int texY = 0;
+            int[] coordinates = SlotAtlas.getAtlasCoordinates(slot.baseItem());
 
-            if(CONFIG.hud.generateOutlines) {
-                texturePath = VirtualTextureRegistry.register(
-                        slot.key() + "_slot.png",
-                        ()-> OutlineTextureGenerator.generateImage(slot.baseItem())
-                );
-            } else {
-                texturePath = "/assets/coolbelt/textures/slot/tools.png";
-                texX = 16 * slot.v();
-            }
-
-            AccessoryRegister.add(slot.key(), texturePath, texX, texY, slot.h(), slot.v());
+            AccessoryRegister.add(slot.key(), texturePath, coordinates[0], coordinates[1], slot.h(), slot.v());
             LOGGER.info("Slot '%s' registered with texture path: %s", slot.key(), texturePath);
         }
     }
