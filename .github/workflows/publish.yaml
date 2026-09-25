@@ -40,8 +40,8 @@ jobs:
         with:
           path: build/docs/javadoc
 
-  publish:
-    name: "Publish"
+  publish-github:
+    name: "Publish to GitHub"
     needs: "build"
     runs-on: "ubuntu-latest"
 
@@ -55,7 +55,30 @@ jobs:
           name: build
           path: build/libs
 
-      - name: Publish releases
+      - name: Publish to GitHub
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-files: |
+            build/libs/!(*-@(dev|sources|javadoc)).jar
+            build/libs/*-@(dev|sources|javadoc).jar
+
+  publish:
+    name: "Publish to Modrinth"
+    needs: "build"
+    runs-on: "ubuntu-latest"
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build
+          path: build/libs
+
+      - name: Publish to Modrinth
         uses: Kir-Antipov/mc-publish@v3.3
         with:
           files: build/libs/!(*-@(dev|sources|javadoc)).jar
@@ -71,11 +94,6 @@ jobs:
 
           # Modrinth thinks fabric isn't available for older Minecraft versions
           loaders: babric #fabric
-
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          github-files: |
-            build/libs/!(*-@(dev|sources|javadoc)).jar
-            build/libs/*-@(dev|sources|javadoc).jar
             
   deploy-pages:
     name: "Deploy JavaDoc to Pages"
