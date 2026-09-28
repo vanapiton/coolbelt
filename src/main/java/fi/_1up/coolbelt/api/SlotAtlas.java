@@ -29,6 +29,7 @@ public final class SlotAtlas {
     private SlotAtlas() {}
 
     /// Get the coordinates of the item on the slot atlas.
+    /// @param item The item to get the coordinates of.
     /// @return An int[] containing the x and y coordinates.
     public static int[] getAtlasCoordinates(@NotNull Item item) {
         int textureId = item.getTextureId(0);
