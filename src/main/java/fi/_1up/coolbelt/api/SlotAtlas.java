@@ -1,7 +1,7 @@
 package fi._1up.coolbelt.api;
 
-import fi._1up.coolbelt.impl.TexturePackHelper;
-import fi._1up.coolbelt.impl.SauvolaThreshold;
+import fi._1up.coolbelt.impl.texture.TexturePackHelper;
+import fi._1up.coolbelt.impl.texture.SauvolaThreshold;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;

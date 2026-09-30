@@ -1,5 +1,6 @@
 package fi._1up.coolbelt.api;
 
+import fi._1up.coolbelt.impl.DurabilityChecker;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;

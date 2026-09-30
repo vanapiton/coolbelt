@@ -3,7 +3,7 @@ package fi._1up.coolbelt;
 import com.periut.accessoryapi.api.AccessoryRegister;
 import fi._1up.coolbelt.api.SlotAtlas;
 import fi._1up.coolbelt.api.ToolSlot;
-import fi._1up.coolbelt.api.VirtualTextureRegistry;
+import fi._1up.coolbelt.impl.texture.VirtualTextureRegistry;
 import net.fabricmc.api.ModInitializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

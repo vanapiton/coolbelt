@@ -1,6 +1,5 @@
-package fi._1up.coolbelt.api;
+package fi._1up.coolbelt.impl.texture;
 
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -10,7 +9,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
 /// Registry managing virtual textures served from [VIRTUAL_ASSET_PATH].
-@ApiStatus.Experimental
 public final class VirtualTextureRegistry {
     /// The path that virtual assets are served from.
     public static final String VIRTUAL_ASSET_PATH = "/assets/coolbelt/virtual/";

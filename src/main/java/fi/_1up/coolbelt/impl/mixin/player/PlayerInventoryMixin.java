@@ -3,7 +3,7 @@ package fi._1up.coolbelt.impl.mixin.player;
 import com.periut.accessoryapi.api.Accessory;
 import com.periut.accessoryapi.api.helper.AccessoryAccess;
 import fi._1up.coolbelt.api.AttackDamageRegistry;
-import fi._1up.coolbelt.api.DurabilityChecker;
+import fi._1up.coolbelt.impl.DurabilityChecker;
 import fi._1up.coolbelt.api.MiningSpeedRegistry;
 import fi._1up.coolbelt.api.ToolbeltInventory;
 import fi._1up.coolbelt.config.KeyBindings;

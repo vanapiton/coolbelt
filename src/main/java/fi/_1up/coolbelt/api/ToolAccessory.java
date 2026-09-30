@@ -1,6 +1,7 @@
 package fi._1up.coolbelt.api;
 
 import com.periut.accessoryapi.api.Accessory;
+import fi._1up.coolbelt.impl.DurabilityChecker;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.ApiStatus;

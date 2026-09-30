@@ -1,6 +1,6 @@
 package fi._1up.coolbelt.impl.mixin.client.texture;
 
-import fi._1up.coolbelt.api.VirtualTextureRegistry;
+import fi._1up.coolbelt.impl.texture.VirtualTextureRegistry;
 import net.minecraft.client.texture.TextureManager;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import static fi._1up.coolbelt.api.VirtualTextureRegistry.VIRTUAL_ASSET_PATH;
+import static fi._1up.coolbelt.impl.texture.VirtualTextureRegistry.VIRTUAL_ASSET_PATH;
 
 @Mixin(TextureManager.class)
 public abstract class TextureManagerMixin {

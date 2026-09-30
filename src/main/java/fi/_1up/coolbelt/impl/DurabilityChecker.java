@@ -1,4 +1,4 @@
-package fi._1up.coolbelt.api;
+package fi._1up.coolbelt.impl;
 
 import net.minecraft.item.ItemStack;
 

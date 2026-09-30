@@ -1,4 +1,4 @@
-package fi._1up.coolbelt.impl;
+package fi._1up.coolbelt.impl.texture;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;

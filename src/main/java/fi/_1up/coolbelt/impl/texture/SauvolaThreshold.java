@@ -1,4 +1,4 @@
-package fi._1up.coolbelt.impl;
+package fi._1up.coolbelt.impl.texture;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
