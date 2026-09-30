@@ -10,12 +10,13 @@ import org.jetbrains.annotations.ApiStatus;
 @ApiStatus.Experimental
 public interface ToolAccessory extends Accessory {
     /// Handles per-tick behavior for worn items and removes broken accessory items.
+    ///
     /// @param player [PlayerEntity] wearing the accessory.
-    /// @param stack [ItemStack] representing the accessory.
+    /// @param stack  [ItemStack] representing the accessory.
     /// @return Original [ItemStack], or null if destroyed through damage.
     default ItemStack tickWhileWorn(PlayerEntity player, ItemStack stack) {
-        if(DurabilityChecker.isAtOrBelow(stack, 0)) {
-            ((ToolbeltInventory)player.inventory).coolbelt$setSelectedAccessory(null);
+        if (DurabilityChecker.isAtOrBelow(stack, 0)) {
+            ((ToolbeltInventory) player.inventory).coolbelt$setSelectedAccessory(null);
             return null;
         }
         return stack;

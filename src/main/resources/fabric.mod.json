@@ -1,47 +1,43 @@
 {
-  "schemaVersion": 1,
-  "id": "coolbelt",
-  "version": "${version}",
-
-  "name": "Coolbelt",
-  "description": "Adds slots for your sword, pickaxe, axe, and shovel. Automatically switches between them.",
-  "authors": [
-    "Vanapiton"
-  ],
-  "contact": {
-    "homepage": "https://coolbelt.1up.fi/",
-    "sources": "https://github.com/vanapiton/coolbelt",
-    "issues": "https://github.com/vanapiton/coolbelt/issues"
-  },
-
-  "license": "MIT",
-  "icon": "assets/coolbelt/icon.png",
-
-  "environment": "*",
-  "entrypoints": {
-    "main": [
-      "fi._1up.coolbelt.Coolbelt"
+    "schemaVersion": 1,
+    "id": "coolbelt",
+    "version": "${version}",
+    "name": "Coolbelt",
+    "description": "Adds slots for your sword, pickaxe, axe, and shovel. Automatically switches between them.",
+    "authors": [
+        "Vanapiton"
     ],
-    "stationapi:event_bus": [
-      "fi._1up.coolbelt.impl.compat.stationapi.StationAPICompat"
+    "contact": {
+        "homepage": "https://coolbelt.1up.fi/",
+        "sources": "https://github.com/vanapiton/coolbelt",
+        "issues": "https://github.com/vanapiton/coolbelt/issues"
+    },
+    "license": "MIT",
+    "icon": "assets/coolbelt/icon.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "fi._1up.coolbelt.Coolbelt"
+        ],
+        "stationapi:event_bus": [
+            "fi._1up.coolbelt.impl.compat.stationapi.StationAPICompat"
+        ],
+        "gcapi3": [
+            "fi._1up.coolbelt.config.CoolbeltConfig"
+        ],
+        "gcapi3:factory_provider": [
+            "fi._1up.coolbelt.config.SlotAlgorithmFactoryProvider"
+        ]
+    },
+    "mixins": [
+        "coolbelt.mixins.json"
     ],
-    "gcapi3": [
-      "fi._1up.coolbelt.config.CoolbeltConfig"
-    ],
-    "gcapi3:factory_provider": [
-      "fi._1up.coolbelt.config.SlotAlgorithmFactoryProvider"
-    ]
-  },
-  "mixins": [
-    "coolbelt.mixins.json"
-  ],
-
-  "depends": {
-    "minecraft": "1.0.0-beta.7.3",
-    "accessoryapi": ">=0.8.1"
-  },
-  "suggests": {
-    "gcapi3": "*",
-    "modmenu": "*"
-  }
+    "depends": {
+        "minecraft": "1.0.0-beta.7.3",
+        "accessoryapi": ">=0.8.1"
+    },
+    "suggests": {
+        "gcapi3": "*",
+        "modmenu": "*"
+    }
 }

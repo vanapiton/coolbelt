@@ -7,8 +7,9 @@ import net.glasslauncher.mods.gcapi3.impl.SeptFunction;
 import net.glasslauncher.mods.gcapi3.impl.object.ConfigEntryHandler;
 import net.glasslauncher.mods.gcapi3.impl.object.entry.EnumConfigEntryHandler;
 
-import java.lang.reflect.*;
-import java.util.function.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
+import java.util.function.Function;
 
 public class SlotAlgorithmFactoryProvider implements ConfigFactoryProvider {
 
@@ -19,8 +20,8 @@ public class SlotAlgorithmFactoryProvider implements ConfigFactoryProvider {
 
     @Override
     public void provideLoadFactories(
-            // What even is this type...
-            ImmutableMap.Builder<Type, SeptFunction<String, ConfigEntry, Field, Object, Boolean, Object, Object, ConfigEntryHandler<?>>> immutableBuilder
+        // What even is this type...
+        ImmutableMap.Builder<Type, SeptFunction<String, ConfigEntry, Field, Object, Boolean, Object, Object, ConfigEntryHandler<?>>> immutableBuilder
     ) {
         immutableBuilder.put(
             SlotAlgorithm.class,

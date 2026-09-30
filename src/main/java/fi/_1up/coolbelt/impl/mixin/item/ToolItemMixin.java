@@ -11,7 +11,7 @@ import static fi._1up.coolbelt.config.CoolbeltConfig.CONFIG;
 public class ToolItemMixin implements ToolAccessory {
     @Override
     public String[] getAccessoryTypes(ItemStack itemStack) {
-        if(CONFIG.allowSlottingModdedTools) return new String[]{"pickaxe", "axe", "shovel"};
-        return new String[] {};
+        if (CONFIG.allowSlottingModdedTools) return new String[]{"pickaxe", "axe", "shovel"};
+        return new String[]{};
     }
 }

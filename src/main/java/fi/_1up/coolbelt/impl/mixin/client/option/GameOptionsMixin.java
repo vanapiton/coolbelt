@@ -15,7 +15,8 @@ import java.io.File;
 
 @Mixin(GameOptions.class)
 public class GameOptionsMixin {
-    @Shadow public KeyBinding[] allKeys;
+    @Shadow
+    public KeyBinding[] allKeys;
 
     @Inject(method = "<init>(Lnet/minecraft/client/Minecraft;Ljava/io/File;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/GameOptions;load()V"))
     private void init(Minecraft minecraft, File file, CallbackInfo ci) {

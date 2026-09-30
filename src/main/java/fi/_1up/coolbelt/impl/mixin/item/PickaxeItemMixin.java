@@ -11,7 +11,7 @@ import static fi._1up.coolbelt.config.CoolbeltConfig.CONFIG;
 public class PickaxeItemMixin implements ToolAccessory {
     @Override
     public String[] getAccessoryTypes(ItemStack itemStack) {
-        if(CONFIG.isSlotEnabled.pickaxe) return new String[] { "pickaxe" };
-        return new String[] {};
+        if (CONFIG.isSlotEnabled.pickaxe) return new String[]{"pickaxe"};
+        return new String[]{};
     }
 }

@@ -16,8 +16,10 @@ import static fi._1up.coolbelt.Coolbelt.LOGGER;
 
 @Mixin(TranslationStorage.class)
 public class TranslationStorageMixin {
-    @Shadow private Properties translations;
-    @Unique private static final String TRANSLATIONS_PATH = "/assets/coolbelt/stationapi/lang/en_US.lang";
+    @Unique
+    private static final String TRANSLATIONS_PATH = "/assets/coolbelt/stationapi/lang/en_US.lang";
+    @Shadow
+    private Properties translations;
 
     @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Ljava/util/Properties;load(Ljava/io/InputStream;)V", ordinal = 1, shift = At.Shift.AFTER))
     public void init(CallbackInfo ci) {

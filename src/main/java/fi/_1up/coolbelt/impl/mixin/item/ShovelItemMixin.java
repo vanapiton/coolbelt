@@ -11,7 +11,7 @@ import static fi._1up.coolbelt.config.CoolbeltConfig.CONFIG;
 public class ShovelItemMixin implements ToolAccessory {
     @Override
     public String[] getAccessoryTypes(ItemStack itemStack) {
-        if(CONFIG.isSlotEnabled.shovel) return new String[] { "shovel" };
-        return new String[] {};
+        if (CONFIG.isSlotEnabled.shovel) return new String[]{"shovel"};
+        return new String[]{};
     }
 }

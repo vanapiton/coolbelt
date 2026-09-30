@@ -47,6 +47,7 @@ public final class AttackDamageRegistry {
     private AttackDamageRegistry() {}
 
     /// Registers an [ItemEvalProvider] using default [ItemEvalRegistry#PRIORITY_DEFAULT].
+    ///
     /// @param provider [ItemEvalProvider] implementation to add.
     @SuppressWarnings("unused")
     public static void register(@NotNull ItemEvalProvider<Entity, Integer> provider) {
@@ -54,6 +55,7 @@ public final class AttackDamageRegistry {
     }
 
     /// Registers an [ItemEvalProvider] with a specified priority.
+    ///
     /// @param priority Numerical priority determining execution order.
     /// @param provider [ItemEvalProvider] implementation to add.
     public static void register(int priority, @NotNull ItemEvalProvider<Entity, Integer> provider) {
@@ -63,7 +65,8 @@ public final class AttackDamageRegistry {
 
     /// Evaluates the attack damage output for an [ItemStack] against a target [Entity].
     /// Coolbelt will generally prefer the highest attack damage out of the evaluated providers.
-    /// @param stack [ItemStack] being evaluated.
+    ///
+    /// @param stack  [ItemStack] being evaluated.
     /// @param target Target [Entity].
     /// @return Attack damage value returned by the highest priority provider, or [UNDAMAGEABLE] if none match.
     public static int getDamage(@Nullable ItemStack stack, @NotNull Entity target) {

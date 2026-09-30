@@ -8,18 +8,19 @@ import java.util.List;
 import static fi._1up.coolbelt.config.CoolbeltConfig.CONFIG;
 
 /// Representation of a tool slot configuration containing texture coordinates and grid positions.
-/// @param key Identifier string for the tool slot.
+///
+/// @param key      Identifier string for the tool slot.
 /// @param baseItem Base item to generate texture from.
-/// @param h Horizontal grid index.
-/// @param v Vertical grid index.
-/// @param enabled State indicating if the slot is enabled in the configuration.
+/// @param h        Horizontal grid index.
+/// @param v        Vertical grid index.
+/// @param enabled  State indicating if the slot is enabled in the configuration.
 @ApiStatus.Experimental
 public record ToolSlot(String key, Item baseItem, int h, int v, boolean enabled) {
     /// Immutable [List] of default [ToolSlot] configurations.
     public static final List<ToolSlot> SLOTS = List.of(
-            new ToolSlot("sword",   Item.IRON_SWORD,   0, 0, CONFIG.isSlotEnabled.sword),
-            new ToolSlot("pickaxe", Item.IRON_PICKAXE, 0, 1, CONFIG.isSlotEnabled.pickaxe),
-            new ToolSlot("axe",     Item.IRON_AXE,     0, 2, CONFIG.isSlotEnabled.axe),
-            new ToolSlot("shovel",  Item.IRON_SHOVEL,  0, 3, CONFIG.isSlotEnabled.shovel)
+        new ToolSlot("sword",   Item.IRON_SWORD,   0, 0, CONFIG.isSlotEnabled.sword),
+        new ToolSlot("pickaxe", Item.IRON_PICKAXE, 0, 1, CONFIG.isSlotEnabled.pickaxe),
+        new ToolSlot("axe",     Item.IRON_AXE,     0, 2, CONFIG.isSlotEnabled.axe),
+        new ToolSlot("shovel",  Item.IRON_SHOVEL,  0, 3, CONFIG.isSlotEnabled.shovel)
     );
 }

@@ -3,11 +3,11 @@ package fi._1up.coolbelt.impl.mixin.player;
 import com.periut.accessoryapi.api.Accessory;
 import com.periut.accessoryapi.api.helper.AccessoryAccess;
 import fi._1up.coolbelt.api.AttackDamageRegistry;
-import fi._1up.coolbelt.impl.DurabilityChecker;
 import fi._1up.coolbelt.api.MiningSpeedRegistry;
 import fi._1up.coolbelt.api.ToolbeltInventory;
 import fi._1up.coolbelt.config.KeyBindings;
 import fi._1up.coolbelt.config.SlotAlgorithm;
+import fi._1up.coolbelt.impl.DurabilityChecker;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
@@ -26,23 +26,28 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.function.ToDoubleFunction;
 
-import static fi._1up.coolbelt.api.AttackDamageRegistry.UNDAMAGEABLE;
 import static fi._1up.coolbelt.api.AttackDamageRegistry.STANDARD_ATTACK_DAMAGE;
+import static fi._1up.coolbelt.api.AttackDamageRegistry.UNDAMAGEABLE;
 import static fi._1up.coolbelt.api.MiningSpeedRegistry.STANDARD_MINING_SPEED;
 import static fi._1up.coolbelt.api.MiningSpeedRegistry.UNMINABLE;
 import static fi._1up.coolbelt.config.CoolbeltConfig.CONFIG;
 
 @Mixin(PlayerInventory.class)
 public abstract class PlayerInventoryMixin implements ToolbeltInventory {
-    @Shadow public PlayerEntity player;
-    @Shadow public int selectedSlot = 0;
-    @Shadow public ItemStack[] main;
-
-    @Unique private ItemStack coolbelt$selectedAccessory = null;
-    @Unique private static final int HOTBAR_SIZE = 9;
-
-    @Unique private boolean ignoreBelt = false;
-    @Unique private boolean wasIgnoreKeyDown = false;
+    @Unique
+    private static final int HOTBAR_SIZE = 9;
+    @Shadow
+    public PlayerEntity player;
+    @Shadow
+    public int selectedSlot = 0;
+    @Shadow
+    public ItemStack[] main;
+    @Unique
+    private ItemStack coolbelt$selectedAccessory = null;
+    @Unique
+    private boolean ignoreBelt = false;
+    @Unique
+    private boolean wasIgnoreKeyDown = false;
 
     @Inject(method = "inventoryTick", at = @At("HEAD"))
     @Environment(EnvType.CLIENT)
@@ -97,13 +102,6 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory {
         Item item = stack.getItem();
         return item instanceof ToolItem || item instanceof SwordItem || item instanceof ShearsItem;
     }
-
-    @Unique
-    private record ToolSelectionResult(
-            double value,
-            int selectedSlot,
-            ItemStack selectedAccessory
-    ) {}
 
     @Unique
     private ToolSelectionResult processToolSelection(ToDoubleFunction<ItemStack> valueExtractor, double baseline, double minValue) {
@@ -238,4 +236,11 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory {
     public boolean coolbelt$isBeltIgnored() {
         return ignoreBelt;
     }
+
+    @Unique
+    private record ToolSelectionResult(
+        double value,
+        int selectedSlot,
+        ItemStack selectedAccessory
+    ) {}
 }

@@ -29,7 +29,7 @@ public class TexturePackHelper {
     @Nullable
     public static BufferedImage getImage(String path) {
         TexturePack texturePack = getSelected();
-        if(texturePack == null) return null;
+        if (texturePack == null) return null;
         BufferedImage image = null;
 
         try (InputStream stream = texturePack.getResource(path)) {

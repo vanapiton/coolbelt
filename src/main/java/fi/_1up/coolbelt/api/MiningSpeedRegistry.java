@@ -30,7 +30,7 @@ public final class MiningSpeedRegistry {
     static {
         // Hand provider
         register(ItemEvalRegistry.PRIORITY_LOW, (_stack, block) -> Optional.of(
-                block.material.isHandHarvestable() ? STANDARD_MINING_SPEED : UNMINABLE
+            block.material.isHandHarvestable() ? STANDARD_MINING_SPEED : UNMINABLE
         ));
 
         // Vanilla provider
@@ -45,8 +45,8 @@ public final class MiningSpeedRegistry {
             if (stack != null && stack.getItem() instanceof SwordItem) {
                 if (!CONFIG.useSwordForMining) return Optional.of(UNMINABLE);
                 return block.material.isHandHarvestable()
-                        ? Optional.of(STANDARD_SWORD_MINING_SPEED)
-                        : Optional.empty();
+                    ? Optional.of(STANDARD_SWORD_MINING_SPEED)
+                    : Optional.empty();
             }
             return Optional.empty();
         });
@@ -64,12 +64,14 @@ public final class MiningSpeedRegistry {
     private MiningSpeedRegistry() {}
 
     /// Registers an [ItemEvalProvider] using default [ItemEvalRegistry#PRIORITY_DEFAULT].
+    ///
     /// @param provider [ItemEvalProvider] implementation to add.
     public static void register(@NotNull ItemEvalProvider<Block, Float> provider) {
         REGISTRY.register(provider);
     }
 
     /// Registers an [ItemEvalProvider] with a specified priority.
+    ///
     /// @param priority Numerical priority determining execution order.
     /// @param provider [ItemEvalProvider] implementation to add.
     public static void register(int priority, @NotNull ItemEvalProvider<Block, Float> provider) {
@@ -79,6 +81,7 @@ public final class MiningSpeedRegistry {
 
     /// Evaluates the mining speed multiplier for an [ItemStack] against a target [Block].
     /// Coolbelt will generally prefer the highest mining speed out of the evaluated providers.
+    ///
     /// @param stack [ItemStack] being evaluated.
     /// @param block Target [Block].
     /// @return Mining speed multiplier returned by the highest priority provider, or [UNMINABLE] if none match.

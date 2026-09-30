@@ -11,7 +11,7 @@ import static fi._1up.coolbelt.config.CoolbeltConfig.CONFIG;
 public class SwordItemMixin implements ToolAccessory {
     @Override
     public String[] getAccessoryTypes(ItemStack itemStack) {
-        if(CONFIG.isSlotEnabled.sword) return new String[] { "sword" };
-        return new String[] {};
+        if (CONFIG.isSlotEnabled.sword) return new String[]{"sword"};
+        return new String[]{};
     }
 }

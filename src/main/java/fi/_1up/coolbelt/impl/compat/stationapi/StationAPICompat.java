@@ -15,23 +15,24 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 import static fi._1up.coolbelt.Coolbelt.LOGGER;
-import static fi._1up.coolbelt.api.MiningSpeedRegistry.*;
+import static fi._1up.coolbelt.api.MiningSpeedRegistry.STANDARD_MINING_SPEED;
+import static fi._1up.coolbelt.api.MiningSpeedRegistry.UNMINABLE;
 
 @SuppressWarnings("unused")
 public class StationAPICompat {
 
     public static Optional<Float> getMiningSpeed(@Nullable ItemStack stack, @NotNull Block block) {
-        if(stack == null) return Optional.empty();
+        if (stack == null) return Optional.empty();
 
         // Required for some modded tools
-        if(stack.getItem() instanceof TemplateToolItem templateToolItem) {
-            if(templateToolItem.isSuitableFor(block)) {
+        if (stack.getItem() instanceof TemplateToolItem templateToolItem) {
+            if (templateToolItem.isSuitableFor(block)) {
                 return Optional.of(ToolEffectivenessImpl.getMiningSpeedMultiplier(stack));
             }
         }
 
         // TODO: Make this handle non-default BlockState
-        if(ToolEffectivenessImpl.isSuitableFor(stack, block.getDefaultState())) {
+        if (ToolEffectivenessImpl.isSuitableFor(stack, block.getDefaultState())) {
             return Optional.of(ToolEffectivenessImpl.getMiningSpeedMultiplier(stack));
         }
 
@@ -59,7 +60,7 @@ public class StationAPICompat {
         final var previousProvider = event.resultProvider;
 
         event.resultProvider = () -> {
-            if(previousProvider != null && previousProvider.getAsBoolean()) return true;
+            if (previousProvider != null && previousProvider.getAsBoolean()) return true;
             return event.player.inventory.isUsingEffectiveTool(event.blockState.getBlock());
         };
     }

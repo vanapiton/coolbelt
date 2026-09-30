@@ -1,7 +1,7 @@
 package fi._1up.coolbelt.api;
 
-import fi._1up.coolbelt.impl.texture.TexturePackHelper;
 import fi._1up.coolbelt.impl.texture.SauvolaThreshold;
+import fi._1up.coolbelt.impl.texture.TexturePackHelper;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
@@ -30,6 +30,7 @@ public final class SlotAtlas {
     private SlotAtlas() {}
 
     /// Get the coordinates of the item on the slot atlas.
+    ///
     /// @param item The item to get the coordinates of.
     /// @return An int[] containing the x and y coordinates.
     public static int[] getAtlasCoordinates(@NotNull Item item) {
@@ -38,16 +39,17 @@ public final class SlotAtlas {
         int x = textureId % ATLAS_GRID_SIZE * BASE_TILE_SIZE;
         int y = textureId / ATLAS_GRID_SIZE * BASE_TILE_SIZE;
 
-        return new int[] {x, y};
+        return new int[]{x, y};
     }
 
     /// Generates the slot atlas.
+    ///
     /// @return The generated [BufferedImage], or null if generation fails.
     @Nullable
     public static BufferedImage generate() {
         BufferedImage slotAtlas = generate(CONFIG.hud.outlineColor, CONFIG.hud.sauvolaK);
 
-        if(slotAtlas != null && FabricLoader.getInstance().isDevelopmentEnvironment()) {
+        if (slotAtlas != null && FabricLoader.getInstance().isDevelopmentEnvironment()) {
             saveToRunDirectory(slotAtlas);
         }
 
@@ -55,17 +57,18 @@ public final class SlotAtlas {
     }
 
     /// Generates the slot atlas.
+    ///
     /// @param rgb The outline color
-    /// @param k The Sauvola thresholding K-value.
+    /// @param k   The Sauvola thresholding K-value.
     /// @return The generated [BufferedImage], or null if generation fails.
     @Nullable
     public static BufferedImage generate(int rgb, double k) {
-        if(!CONFIG.hud.generateSlotAtlas) return null;
+        if (!CONFIG.hud.generateSlotAtlas) return null;
 
         LOGGER.info("Trying to generate slot atlas.");
 
         BufferedImage outlineAtlas = TexturePackHelper.getImage("/gui/items.png");
-        if(outlineAtlas == null) return null;
+        if (outlineAtlas == null) return null;
 
         int atlasWidth = outlineAtlas.getWidth();
         int atlasHeight = outlineAtlas.getHeight();
@@ -87,8 +90,7 @@ public final class SlotAtlas {
 
                 if (isThresholded || isEdge(pixels, x, y, atlasWidth)) {
                     outlineAtlas.setRGB(x, y, argb & 0xFF000000 | rgb);
-                }
-                else {
+                } else {
                     outlineAtlas.setRGB(x, y, 0);
                 }
             }
@@ -101,9 +103,9 @@ public final class SlotAtlas {
         if (x == 0 || x == width - 1 || y == 0 || y == width - 1) return true;
 
         return isTransparent(pixels[y * width + (x - 1)])
-                || isTransparent(pixels[y * width + (x + 1)])
-                || isTransparent(pixels[(y - 1) * width + x])
-                || isTransparent(pixels[(y + 1) * width + x]);
+            || isTransparent(pixels[y * width + (x + 1)])
+            || isTransparent(pixels[(y - 1) * width + x])
+            || isTransparent(pixels[(y + 1) * width + x]);
     }
 
     private static boolean isTransparent(int argb) {

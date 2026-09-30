@@ -20,9 +20,11 @@ import static fi._1up.coolbelt.impl.texture.VirtualTextureRegistry.VIRTUAL_ASSET
 @Mixin(TextureManager.class)
 public abstract class TextureManagerMixin {
     @SuppressWarnings("rawtypes")
-    @Shadow private HashMap textures;
+    @Shadow
+    private HashMap textures;
 
-    @Shadow public abstract void load(BufferedImage image, int id);
+    @Shadow
+    public abstract void load(BufferedImage image, int id);
 
     @SuppressWarnings("unchecked")
     @Inject(method = "getTextureId", at = @At("HEAD"), cancellable = true)

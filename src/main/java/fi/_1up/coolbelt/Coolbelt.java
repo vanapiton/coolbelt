@@ -16,7 +16,7 @@ public class Coolbelt implements ModInitializer {
         String texturePath = VirtualTextureRegistry.register("/assets/coolbelt/textures/slot/slots.png", SlotAtlas::generate);
 
         for (ToolSlot slot : ToolSlot.SLOTS) {
-            if(!slot.enabled()) continue;
+            if (!slot.enabled()) continue;
 
             int[] coordinates = SlotAtlas.getAtlasCoordinates(slot.baseItem());
 

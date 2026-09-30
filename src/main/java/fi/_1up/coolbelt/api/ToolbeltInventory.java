@@ -9,14 +9,17 @@ import org.jetbrains.annotations.ApiStatus;
 @ApiStatus.Experimental
 public interface ToolbeltInventory extends Inventory {
     /// Retrieves the currently selected accessory [ItemStack].
+    ///
     /// @return Currently selected accessory [ItemStack].
     ItemStack coolbelt$getSelectedAccessory();
 
     /// Sets the currently selected accessory [ItemStack].
+    ///
     /// @param accessory Accessory [ItemStack] to select.
     void coolbelt$setSelectedAccessory(ItemStack accessory);
 
     /// Fetches if the player's belt is being ignored at the moment.
+    ///
     /// @return Boolean indicating belt being ignored.
     boolean coolbelt$isBeltIgnored();
 }

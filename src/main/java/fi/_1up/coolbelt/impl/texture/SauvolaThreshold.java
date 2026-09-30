@@ -1,4 +1,5 @@
 package fi._1up.coolbelt.impl.texture;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,10 +11,11 @@ public final class SauvolaThreshold {
     private SauvolaThreshold() {}
 
     /// Modifies a BufferedImage in-place based on Sauvola thresholding on sRGB luma, preserves and ignores alpha.
-    /// @param image Target BufferedImage to modify in-place.
+    ///
+    /// @param image  Target BufferedImage to modify in-place.
     /// @param radius Radius of the local neighborhood window.
-    /// @param k Sauvola standard deviation weight.
-    /// @param r Dynamic range of standard deviation.
+    /// @param k      Sauvola standard deviation weight.
+    /// @param r      Dynamic range of standard deviation.
     @Contract(mutates = "param1")
     public static void mutate(@NotNull BufferedImage image, int radius, double k, double r) {
         int width = image.getWidth();
@@ -30,7 +32,7 @@ public final class SauvolaThreshold {
 
                 int argb = src[i];
                 argb |= 0x00FFFFFF;
-                if(isEdge || underThreshold) argb &= 0xFF000000;
+                if (isEdge || underThreshold) argb &= 0xFF000000;
 
                 dst[i] = argb;
             }
