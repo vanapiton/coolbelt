@@ -8,19 +8,12 @@ import net.fabricmc.api.ModInitializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static fi._1up.coolbelt.config.CoolbeltConfig.CONFIG;
-
 public class Coolbelt implements ModInitializer {
     public static final Logger LOGGER = LogManager.getFormatterLogger("Coolbelt");
 
     @Override
     public void onInitialize() {
-        String texturePath;
-        if(CONFIG.hud.generateOutlines) {
-            texturePath = VirtualTextureRegistry.register("slots.png", SlotAtlas::generate);
-        } else {
-            texturePath = "/assets/coolbelt/textures/slot/slots.png";
-        }
+        String texturePath = VirtualTextureRegistry.register("/assets/coolbelt/textures/slot/slots.png", SlotAtlas::generate);
 
         for (ToolSlot slot : ToolSlot.SLOTS) {
             if(!slot.enabled()) continue;

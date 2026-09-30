@@ -78,7 +78,7 @@ public class CoolbeltConfigFields {
             nameKey = "config.coolbelt.require_holding_ignore_key.name",
             name = "Require holding the ignore keybind",
             descriptionKey = "config.coolbelt.require_holding_ignore_key.desc",
-            description = "By default the ignore keybind acts as a toggle."
+            description = "By default, the ignore keybind acts as a toggle."
     )
     public Boolean requireHoldingIgnoreKey = false;
 }

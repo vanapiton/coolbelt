@@ -5,13 +5,30 @@ import net.glasslauncher.mods.gcapi3.api.ConfigEntry;
 @SuppressWarnings("CanBeFinal")
 public class CoolbeltConfigHud {
     @ConfigEntry(
-            nameKey = "config.coolbelt.hud.generate_outlines.name",
-            name = "§lGenerate slot placeholder outlines on-the-fly§r",
-            descriptionKey = "config.coolbelt.generate_outlines.desc",
-            description = "Only looks good on 16x16 texture packs. If false, loads a fallback texture instead,",
-            requiresRestart = true
+            nameKey = "config.coolbelt.hud.generate_slot_atlas.name",
+            name = "§lGenerate slot texture atlas on-the-fly§r §8(Requires texture pack reload)§r",
+            descriptionKey = "config.coolbelt.generate_slot_atlas.desc",
+            description = "Best suited for 16x16 texture packs. If false, loads a fallback texture instead."
     )
-    public Boolean generateOutlines = true;
+    public Boolean generateSlotAtlas = true;
+
+    @ConfigEntry(
+            nameKey = "config.coolbelt.hud.outline_color.name",
+            name = "Outline color §8(Requires texture pack reload)§r",
+            descriptionKey = "config.coolbelt.outline_color.desc",
+            description = "Color of the tool outlines, as a decimal integer RGB color (e.g., 0x5F5F5F becomes 6250335).",
+            minValue = 0x000000,
+            maxValue = 0xFFFFFF
+    )
+    public Integer outlineColor = 0x5F5F5F;
+
+    @ConfigEntry(
+            nameKey = "config.coolbelt.hud.sauvola_k.name",
+            name = "Sauvola thresholding K value §8(Requires texture pack reload)§r",
+            descriptionKey = "config.coolbelt.sauvola_k.desc",
+            description = "Controls the outline generation sensitivity. Lower values are more sensitive."
+    )
+    public Double sauvolaK = 0.4;
 
     @ConfigEntry(
             nameKey = "config.coolbelt.hud.show_durabilities.name",

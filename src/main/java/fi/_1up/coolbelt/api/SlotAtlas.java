@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 
 import static fi._1up.coolbelt.Coolbelt.LOGGER;
+import static fi._1up.coolbelt.config.CoolbeltConfig.CONFIG;
 
 /// Generates slot placeholder outline textures from the item atlas. Supports texture packs.
 @ApiStatus.Experimental
@@ -44,7 +45,7 @@ public final class SlotAtlas {
     /// @return The generated [BufferedImage], or null if generation fails.
     @Nullable
     public static BufferedImage generate() {
-        BufferedImage slotAtlas = generate(0x5F5F5F, 0.4);
+        BufferedImage slotAtlas = generate(CONFIG.hud.outlineColor, CONFIG.hud.sauvolaK);
 
         if(slotAtlas != null && FabricLoader.getInstance().isDevelopmentEnvironment()) {
             saveToRunDirectory(slotAtlas);
@@ -59,6 +60,8 @@ public final class SlotAtlas {
     /// @return The generated [BufferedImage], or null if generation fails.
     @Nullable
     public static BufferedImage generate(int rgb, double k) {
+        if(!CONFIG.hud.generateSlotAtlas) return null;
+
         LOGGER.info("Trying to generate slot atlas.");
 
         BufferedImage outlineAtlas = TexturePackHelper.getImage("/gui/items.png");
