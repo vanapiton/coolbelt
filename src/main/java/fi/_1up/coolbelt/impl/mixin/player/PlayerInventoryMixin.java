@@ -12,6 +12,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.FallingBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.*;
@@ -157,6 +158,7 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory {
     @Inject(method = "getAttackDamage", at = @At("HEAD"), cancellable = true)
     private void getAttackDamage(Entity target, CallbackInfoReturnable<Integer> cir) {
         if (ignoreBelt) return;
+        if (target instanceof FallingBlockEntity) return;
 
         ToolSelectionResult result = processToolSelection(
             stack -> AttackDamageRegistry.getDamage(stack, target),
