@@ -15,7 +15,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
 
 import static fi._1up.coolbelt.Coolbelt.LOGGER;
-import static fi._1up.coolbelt.config.CoolbeltConfig.CONFIG;
+import static fi._1up.coolbelt.config.RootConfig.CONFIG;
 
 /// Registry managing durability HUD display groups and their positioning parameters.
 @ApiStatus.Experimental

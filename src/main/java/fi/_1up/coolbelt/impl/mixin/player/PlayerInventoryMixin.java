@@ -31,7 +31,7 @@ import static fi._1up.coolbelt.api.AttackDamageRegistry.STANDARD_ATTACK_DAMAGE;
 import static fi._1up.coolbelt.api.AttackDamageRegistry.UNDAMAGEABLE;
 import static fi._1up.coolbelt.api.MiningSpeedRegistry.STANDARD_MINING_SPEED;
 import static fi._1up.coolbelt.api.MiningSpeedRegistry.UNMINABLE;
-import static fi._1up.coolbelt.config.CoolbeltConfig.CONFIG;
+import static fi._1up.coolbelt.config.RootConfig.CONFIG;
 
 @Mixin(PlayerInventory.class)
 public abstract class PlayerInventoryMixin implements ToolbeltInventory {

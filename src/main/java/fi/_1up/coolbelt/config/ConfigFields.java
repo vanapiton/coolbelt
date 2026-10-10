@@ -6,7 +6,7 @@ import net.glasslauncher.mods.gcapi3.api.TriBoolean;
 import net.glasslauncher.mods.gcapi3.api.ValueOnVanillaServer;
 
 @SuppressWarnings("CanBeFinal")
-public class CoolbeltConfigFields {
+public class ConfigFields {
     @ConfigCategory(
         nameKey = "config.coolbelt.is_slot_enabled.name",
         name = "Toggle toolbelt slots §8(Requires restart)§r",
@@ -14,7 +14,7 @@ public class CoolbeltConfigFields {
         description = "Determines which toolbelt slots are added; §8If none, §owhy do you have this mod?§r",
         multiplayerSynced = true
     )
-    public CoolbeltConfigSlotToggles isSlotEnabled = new CoolbeltConfigSlotToggles();
+    public ConfigSlotToggles isSlotEnabled = new ConfigSlotToggles();
 
     @ConfigCategory(
         nameKey = "config.coolbelt.hud.name",
@@ -22,7 +22,7 @@ public class CoolbeltConfigFields {
         descriptionKey = "config.coolbelt.hud.desc",
         description = "Origin is on the middle hotbar slot."
     )
-    public CoolbeltConfigHud hud = new CoolbeltConfigHud();
+    public ConfigHud hud = new ConfigHud();
 
     @ConfigEntry(
         nameKey = "config.coolbelt.use_tool_for_zero_hardness.name",

@@ -15,7 +15,7 @@ import java.io.File;
 import java.io.IOException;
 
 import static fi._1up.coolbelt.Coolbelt.LOGGER;
-import static fi._1up.coolbelt.config.CoolbeltConfig.CONFIG;
+import static fi._1up.coolbelt.config.RootConfig.CONFIG;
 
 /// Generates slot placeholder outline textures from the item atlas. Supports texture packs.
 @ApiStatus.Experimental

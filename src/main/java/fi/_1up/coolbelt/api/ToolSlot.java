@@ -5,7 +5,7 @@ import org.jetbrains.annotations.ApiStatus;
 
 import java.util.List;
 
-import static fi._1up.coolbelt.config.CoolbeltConfig.CONFIG;
+import static fi._1up.coolbelt.config.RootConfig.CONFIG;
 
 /// Representation of a tool slot configuration containing texture coordinates and grid positions.
 ///

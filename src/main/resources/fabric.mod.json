@@ -23,7 +23,7 @@
             "fi._1up.coolbelt.impl.compat.stationapi.StationAPICompat"
         ],
         "gcapi3": [
-            "fi._1up.coolbelt.config.CoolbeltConfig"
+            "fi._1up.coolbelt.config.RootConfig"
         ],
         "gcapi3:factory_provider": [
             "fi._1up.coolbelt.config.SlotAlgorithmFactoryProvider"

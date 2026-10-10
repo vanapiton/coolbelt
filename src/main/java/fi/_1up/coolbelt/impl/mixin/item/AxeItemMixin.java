@@ -5,7 +5,7 @@ import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 
-import static fi._1up.coolbelt.config.CoolbeltConfig.CONFIG;
+import static fi._1up.coolbelt.config.RootConfig.CONFIG;
 
 @Mixin(AxeItem.class)
 public class AxeItemMixin implements ToolAccessory {

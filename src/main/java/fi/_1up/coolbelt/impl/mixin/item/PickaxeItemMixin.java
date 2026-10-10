@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.PickaxeItem;
 import org.spongepowered.asm.mixin.Mixin;
 
-import static fi._1up.coolbelt.config.CoolbeltConfig.CONFIG;
+import static fi._1up.coolbelt.config.RootConfig.CONFIG;
 
 @Mixin(PickaxeItem.class)
 public class PickaxeItemMixin implements ToolAccessory {

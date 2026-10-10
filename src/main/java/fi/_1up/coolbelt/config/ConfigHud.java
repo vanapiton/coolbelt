@@ -3,7 +3,7 @@ package fi._1up.coolbelt.config;
 import net.glasslauncher.mods.gcapi3.api.ConfigEntry;
 
 @SuppressWarnings("CanBeFinal")
-public class CoolbeltConfigHud {
+public class ConfigHud {
     @ConfigEntry(
         nameKey = "config.coolbelt.hud.generate_slot_atlas.name",
         name = "§lGenerate slot texture atlas on-the-fly§r §8(Requires texture pack reload)§r",

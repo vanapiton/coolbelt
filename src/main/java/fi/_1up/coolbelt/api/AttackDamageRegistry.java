@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 import static fi._1up.coolbelt.Coolbelt.LOGGER;
-import static fi._1up.coolbelt.config.CoolbeltConfig.CONFIG;
+import static fi._1up.coolbelt.config.RootConfig.CONFIG;
 
 /// Registry managing attack damage evaluations for [ItemStack] instances against target [Entity] instances.
 /// Coolbelt will generally prefer the highest attack damage out of the evaluated providers.

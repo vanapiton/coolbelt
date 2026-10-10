@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 import static fi._1up.coolbelt.Coolbelt.LOGGER;
-import static fi._1up.coolbelt.config.CoolbeltConfig.CONFIG;
+import static fi._1up.coolbelt.config.RootConfig.CONFIG;
 
 /// Registry managing mining speed evaluations for [ItemStack] instances against target [Block] instances.
 /// Coolbelt will generally prefer the highest mining speed out of the evaluated providers.
