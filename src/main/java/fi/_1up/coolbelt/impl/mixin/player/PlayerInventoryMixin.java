@@ -1,6 +1,5 @@
 package fi._1up.coolbelt.impl.mixin.player;
 
-import com.periut.accessoryapi.api.Accessory;
 import com.periut.accessoryapi.api.helper.AccessoryAccess;
 import fi._1up.coolbelt.api.AttackDamageRegistry;
 import fi._1up.coolbelt.api.MiningSpeedRegistry;
@@ -25,21 +24,19 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.function.ToDoubleFunction;
-
 import static fi._1up.coolbelt.api.AttackDamageRegistry.STANDARD_ATTACK_DAMAGE;
 import static fi._1up.coolbelt.api.AttackDamageRegistry.UNDAMAGEABLE;
 import static fi._1up.coolbelt.api.MiningSpeedRegistry.STANDARD_MINING_SPEED;
 import static fi._1up.coolbelt.api.MiningSpeedRegistry.UNMINABLE;
 import static fi._1up.coolbelt.config.RootConfig.CONFIG;
+import static fi._1up.coolbelt.impl.ToolSelector.*;
 
 @Mixin(PlayerInventory.class)
 public abstract class PlayerInventoryMixin implements ToolbeltInventory {
-    @Unique
-    private static final int HOTBAR_SIZE = 9;
     @Shadow
     public PlayerEntity player;
     @Shadow
+    @SuppressWarnings("unused")
     public int selectedSlot = 0;
     @Shadow
     public ItemStack[] main;
@@ -79,82 +76,6 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory {
         if (stack != null) cir.setReturnValue(stack);
     }
 
-    @Unique
-    private int findBestItemIndex(ItemStack[] items, int length, ToDoubleFunction<ItemStack> valueExtractor, double baseline) {
-        double bestValue = baseline;
-        int bestIndex = -1;
-
-        for (int i = 0; i < length; i++) {
-            ItemStack stack = items[i];
-            if (stack != null) {
-                double value = valueExtractor.applyAsDouble(stack);
-                if (value > bestValue) {
-                    bestValue = value;
-                    bestIndex = i;
-                }
-            }
-        }
-        return bestIndex;
-    }
-
-    @Unique
-    private boolean isTool(ItemStack stack) {
-        if (stack == null) return false;
-        Item item = stack.getItem();
-        return item instanceof ToolItem || item instanceof SwordItem || item instanceof ShearsItem;
-    }
-
-    @Unique
-    private ToolSelectionResult processToolSelection(ToDoubleFunction<ItemStack> valueExtractor, double baseline, double minValue) {
-        ItemStack handStack = getStack(selectedSlot);
-        double handValue = valueExtractor.applyAsDouble(handStack);
-
-        int bestHotbarSlot = selectedSlot;
-        if (CONFIG.searchHotbar || CONFIG.slotAlgorithm == SlotAlgorithm.ALWAYS_PREFER_HOTBAR_TOOL) {
-            int bestSlot = findBestItemIndex(main, HOTBAR_SIZE, valueExtractor, handValue);
-            if (bestSlot >= 0) bestHotbarSlot = bestSlot;
-        }
-
-        ItemStack bestHotbarStack = getStack(bestHotbarSlot);
-        double bestHotbarValue = (bestHotbarSlot == selectedSlot) ? handValue : valueExtractor.applyAsDouble(bestHotbarStack);
-
-        switch (CONFIG.slotAlgorithm) {
-            case ALWAYS_PREFER_HAND_TOOL:
-                if (isTool(handStack) || handValue > baseline) {
-                    return new ToolSelectionResult(minValue, selectedSlot, null);
-                }
-                break;
-            case ALWAYS_PREFER_HOTBAR_TOOL:
-                if (bestHotbarStack == null) break;
-                if (isTool(bestHotbarStack) || bestHotbarValue > baseline) {
-                    return new ToolSelectionResult(bestHotbarValue, bestHotbarSlot, null);
-                }
-                break;
-            case ALWAYS_PREFER_BELT_TOOL:
-                bestHotbarValue = minValue;
-                break;
-            case ALWAYS_PREFER_FASTEST_TOOL:
-            default:
-                break;
-        }
-
-        ItemStack[] accessories = AccessoryAccess.getAccessories(player);
-        int bestAccessoryIndex = findBestItemIndex(accessories, accessories.length, valueExtractor, bestHotbarValue);
-
-        if (bestAccessoryIndex >= 0) {
-            ItemStack bestStack = accessories[bestAccessoryIndex];
-            if (bestStack.getItem() instanceof Accessory) {
-                return new ToolSelectionResult(valueExtractor.applyAsDouble(bestStack), selectedSlot, bestStack);
-            }
-        }
-
-        if (isTool(bestHotbarStack) || bestHotbarValue > baseline) {
-            return new ToolSelectionResult(bestHotbarValue, bestHotbarSlot, null);
-        }
-
-        return new ToolSelectionResult(minValue, selectedSlot, null);
-    }
-
     @Inject(method = "getAttackDamage", at = @At("HEAD"), cancellable = true)
     private void getAttackDamage(Entity target, CallbackInfoReturnable<Integer> cir) {
         if (ignoreBelt) return;
@@ -163,19 +84,15 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory {
         ToolSelectionResult result = processToolSelection(
             stack -> AttackDamageRegistry.getDamage(stack, target),
             STANDARD_ATTACK_DAMAGE,
-            UNDAMAGEABLE
+            UNDAMAGEABLE,
+            (PlayerInventory) (Object) this
         );
+
         if (result.value() >= 0) {
             this.selectedSlot = result.selectedSlot();
             coolbelt$setSelectedAccessory(result.selectedAccessory());
             cir.setReturnValue((int) result.value());
         }
-    }
-
-    @Unique
-    private boolean shouldSkipZeroHardnessBlock(Block block) {
-        if (CONFIG.useToolForZeroHardness) return false;
-        return block.getHardness() == 0 && block.material.isHandHarvestable();
     }
 
     @Inject(method = "getStrengthOnBlock", at = @At("HEAD"), cancellable = true)
@@ -186,8 +103,10 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory {
         ToolSelectionResult result = processToolSelection(
             stack -> MiningSpeedRegistry.getSpeed(stack, block),
             STANDARD_MINING_SPEED,
-            UNMINABLE
+            UNMINABLE,
+            (PlayerInventory) (Object) this
         );
+
         if (result.value() >= 0) {
             this.selectedSlot = result.selectedSlot();
             coolbelt$setSelectedAccessory(result.selectedAccessory());
@@ -238,11 +157,4 @@ public abstract class PlayerInventoryMixin implements ToolbeltInventory {
     public boolean coolbelt$isBeltIgnored() {
         return ignoreBelt;
     }
-
-    @Unique
-    private record ToolSelectionResult(
-        double value,
-        int selectedSlot,
-        ItemStack selectedAccessory
-    ) {}
 }

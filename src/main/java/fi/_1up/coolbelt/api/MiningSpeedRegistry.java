@@ -1,6 +1,7 @@
 package fi._1up.coolbelt.api;
 
 import fi._1up.coolbelt.impl.DurabilityChecker;
+import fi._1up.coolbelt.impl.compat.stationapi.StationAPICompat;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 import static fi._1up.coolbelt.Coolbelt.LOGGER;
 import static fi._1up.coolbelt.config.RootConfig.CONFIG;
+import static fi._1up.coolbelt.api.ItemEvalRegistry.*;
 
 /// Registry managing mining speed evaluations for [ItemStack] instances against target [Block] instances.
 /// Coolbelt will generally prefer the highest mining speed out of the evaluated providers.
@@ -24,24 +26,24 @@ public final class MiningSpeedRegistry {
     /// Sentinel value indicating a block cannot be mined by the item stack.
     public static final float UNMINABLE = Float.NEGATIVE_INFINITY;
 
-    /// Internal [ItemEvalRegistry] instance mapping [ItemStack] and [Block] references to mining speed multipliers.
-    private static final ItemEvalRegistry<Block, Float> REGISTRY = new ItemEvalRegistry<>(UNMINABLE) {};
+    /// Internal [ItemEvalRegistry] instance mapping [ItemStack] and [Object] references to mining speed multipliers.
+    private static final ItemEvalRegistry<Object, Float> REGISTRY = new ItemEvalRegistry<>(UNMINABLE) {};
 
     static {
         // Hand provider
-        register(ItemEvalRegistry.PRIORITY_LOW, (_stack, block) -> Optional.of(
+        register(PRIORITY_LOW, (_stack, block) -> Optional.of(
             block.material.isHandHarvestable() ? STANDARD_MINING_SPEED : UNMINABLE
         ));
 
         // Vanilla provider
-        register(ItemEvalRegistry.PRIORITY_VANILLA, (stack, block) -> {
+        register(PRIORITY_VANILLA, (stack, block) -> {
             if (stack == null) return Optional.empty();
             boolean isSuitable = block.material.isHandHarvestable() || stack.isSuitableFor(block);
             return Optional.of(isSuitable ? stack.getMiningSpeedMultiplier(block) : UNMINABLE);
         });
 
         // Sword provider
-        register(ItemEvalRegistry.PRIORITY_HIGH, (stack, block) -> {
+        register(PRIORITY_HIGH, (stack, block) -> {
             if (stack != null && stack.getItem() instanceof SwordItem) {
                 if (!CONFIG.useSwordForMining) return Optional.of(UNMINABLE);
                 return block.material.isHandHarvestable()
@@ -52,7 +54,7 @@ public final class MiningSpeedRegistry {
         });
 
         // Durability saver
-        register(ItemEvalRegistry.PRIORITY_CRITICAL, (stack, block) -> {
+        register(PRIORITY_CRITICAL, (stack, block) -> {
             if (CONFIG.leaveOneDurability && DurabilityChecker.isAtOrBelow(stack, 1)) {
                 return Optional.of(UNMINABLE);
             }
@@ -66,8 +68,9 @@ public final class MiningSpeedRegistry {
     /// Registers an [ItemEvalProvider] using default [ItemEvalRegistry#PRIORITY_DEFAULT].
     ///
     /// @param provider [ItemEvalProvider] implementation to add.
+    @SuppressWarnings("unused")
     public static void register(@NotNull ItemEvalProvider<Block, Float> provider) {
-        REGISTRY.register(provider);
+        register(PRIORITY_DEFAULT, provider);
     }
 
     /// Registers an [ItemEvalProvider] with a specified priority.
@@ -75,17 +78,36 @@ public final class MiningSpeedRegistry {
     /// @param priority Numerical priority determining execution order.
     /// @param provider [ItemEvalProvider] implementation to add.
     public static void register(int priority, @NotNull ItemEvalProvider<Block, Float> provider) {
+        registerInternal(priority, (stack, object)->{
+            Block block = toBlock(object);
+            if (block == null) return Optional.of(UNMINABLE);
+            return provider.get(stack, block);
+        });
+    }
+
+    /// Registers an [ItemEvalProvider] with a specified priority.
+    ///
+    /// @param priority Numerical priority determining execution order.
+    /// @param provider [ItemEvalProvider] implementation to add.
+    @ApiStatus.Internal
+    public static void registerInternal(int priority, @NotNull ItemEvalProvider<Object, Float> provider) {
         REGISTRY.register(priority, provider);
         LOGGER.info("Mining speed provider registered with priority %d.", priority);
     }
 
-    /// Evaluates the mining speed multiplier for an [ItemStack] against a target [Block].
+    private static Block toBlock(Object object) {
+        if(StationAPICompat.IS_STAPI_LOADED) return StationAPICompat.toBlock(object);
+        if(object instanceof Block block) return block;
+        return null;
+    }
+
+    /// Evaluates the mining speed multiplier for an [ItemStack] against a target [Block] or [net.modificationstation.stationapi.api.block.BlockState].
     /// Coolbelt will generally prefer the highest mining speed out of the evaluated providers.
     ///
     /// @param stack [ItemStack] being evaluated.
-    /// @param block Target [Block].
+    /// @param block Target [Block] or [net.modificationstation.stationapi.api.block.BlockState].
     /// @return Mining speed multiplier returned by the highest priority provider, or [UNMINABLE] if none match.
-    public static float getSpeed(@Nullable ItemStack stack, @NotNull Block block) {
+    public static float getSpeed(@Nullable ItemStack stack, @NotNull Object block) {
         return REGISTRY.evaluate(stack, block);
     }
 }

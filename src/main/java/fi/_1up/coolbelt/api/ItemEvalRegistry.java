@@ -42,6 +42,7 @@ public abstract class ItemEvalRegistry<T, R> {
     /// Registers an [ItemEvalProvider] using default [PRIORITY_DEFAULT].
     ///
     /// @param provider [ItemEvalProvider] implementation to add.
+    @SuppressWarnings("unused")
     protected void register(@NotNull ItemEvalProvider<T, R> provider) {
         register(PRIORITY_DEFAULT, provider);
     }
