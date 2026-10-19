@@ -2,6 +2,7 @@ package fi._1up.coolbelt.api;
 
 import fi._1up.coolbelt.impl.texture.SauvolaThreshold;
 import fi._1up.coolbelt.impl.texture.TexturePackHelper;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
@@ -34,6 +35,8 @@ public final class SlotAtlas {
     /// @param item The item to get the coordinates of.
     /// @return An int[] containing the x and y coordinates.
     public static int[] getAtlasCoordinates(@NotNull Item item) {
+        if(FabricLoader.getInstance().getEnvironmentType() != EnvType.CLIENT) return new int[]{0,0};
+
         int textureId = item.getTextureId(0);
 
         int x = textureId % ATLAS_GRID_SIZE * BASE_TILE_SIZE;
