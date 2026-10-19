@@ -2,6 +2,7 @@ package fi._1up.coolbelt.api;
 
 import fi._1up.coolbelt.impl.DurabilityChecker;
 import fi._1up.coolbelt.impl.compat.stationapi.StationAPICompat;
+import fi._1up.coolbelt.impl.compat.stationapi.StAPIBlockSmuggler;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
@@ -101,11 +102,11 @@ public final class MiningSpeedRegistry {
         return null;
     }
 
-    /// Evaluates the mining speed multiplier for an [ItemStack] against a target [Block] or [net.modificationstation.stationapi.api.block.BlockState].
+    /// Evaluates the mining speed multiplier for an [ItemStack] against a target [Block] or [StAPIBlockSmuggler].
     /// Coolbelt will generally prefer the highest mining speed out of the evaluated providers.
     ///
     /// @param stack [ItemStack] being evaluated.
-    /// @param block Target [Block] or [net.modificationstation.stationapi.api.block.BlockState].
+    /// @param block Target [Block] or [StAPIBlockSmuggler].
     /// @return Mining speed multiplier returned by the highest priority provider, or [UNMINABLE] if none match.
     public static float getSpeed(@Nullable ItemStack stack, @NotNull Object block) {
         return REGISTRY.evaluate(stack, block);

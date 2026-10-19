@@ -10,9 +10,12 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
 import net.modificationstation.stationapi.api.block.BlockState;
+import net.modificationstation.stationapi.api.block.context.BlockTagContext;
 import net.modificationstation.stationapi.api.event.entity.player.IsPlayerUsingEffectiveToolEvent;
 import net.modificationstation.stationapi.api.event.entity.player.PlayerStrengthOnBlockEvent;
 import net.modificationstation.stationapi.api.event.mod.InitEvent;
+import net.modificationstation.stationapi.api.item.tool.StationTool;
+import net.modificationstation.stationapi.api.item.tool.ToolLevel;
 import net.modificationstation.stationapi.impl.item.ToolEffectivenessImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,24 +32,32 @@ public class StationAPICompat {
     public static final boolean IS_STAPI_LOADED = FabricLoader.getInstance().isModLoaded("stationapi");
 
     public static Block toBlock(Object object) {
+        if(object instanceof StAPIBlockSmuggler smuggler) return smuggler.state().getBlock();
         if(object instanceof BlockState state) return state.getBlock();
         if(object instanceof Block block) return block;
         return null;
     }
 
+    private static boolean isSuitable(ItemStack stack, StAPIBlockSmuggler smuggler) {
+        BlockTagContext context = BlockTagContext.of(smuggler.blockView(), smuggler.pos());
+        return stack.getItem() instanceof StationTool stationTool
+            && smuggler.state().isIn(stationTool.getEffectiveBlocks(stack), context)
+            && ToolLevel.isSuitable(stationTool.getMaterial(stack).getToolLevel(), smuggler.state());
+    }
+
     public static Optional<Float> getMiningSpeed(@Nullable ItemStack stack, @NotNull Object object) {
         if (stack == null) return Optional.empty();
-        if (!(object instanceof BlockState state)) return Optional.empty();
+        if (!(object instanceof StAPIBlockSmuggler smuggler)) return Optional.empty();
+
+        if (isSuitable(stack, smuggler)) {
+            return Optional.of(ToolEffectivenessImpl.getMiningSpeedMultiplier(stack));
+        }
 
         // Required for some modded tools
         if (stack.getItem() instanceof ToolItem toolItem) {
-            if (toolItem.isSuitableFor(state.getBlock())) {
+            if (toolItem.isSuitableFor(smuggler.state().getBlock())) {
                 return Optional.of(ToolEffectivenessImpl.getMiningSpeedMultiplier(stack));
             }
-        }
-
-        if (ToolEffectivenessImpl.isSuitableFor(stack, state)) {
-            return Optional.of(ToolEffectivenessImpl.getMiningSpeedMultiplier(stack));
         }
 
         return Optional.of(UNMINABLE);
@@ -71,8 +82,10 @@ public class StationAPICompat {
             if (((ToolbeltInventory)inv).coolbelt$isBeltIgnored()) return baseStrength;
             if (shouldSkipZeroHardnessBlock(state.getBlock())) return baseStrength;
 
+            StAPIBlockSmuggler smuggler = new StAPIBlockSmuggler(state, event.blockView, event.blockPos);
+
             ToolSelectionResult result = processToolSelection(
-                stack -> MiningSpeedRegistry.getSpeed(stack, state),
+                stack -> MiningSpeedRegistry.getSpeed(stack, smuggler),
                 STANDARD_MINING_SPEED,
                 UNMINABLE,
                 inv
