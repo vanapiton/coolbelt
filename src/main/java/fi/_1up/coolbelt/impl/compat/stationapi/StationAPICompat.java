@@ -13,7 +13,6 @@ import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.event.entity.player.IsPlayerUsingEffectiveToolEvent;
 import net.modificationstation.stationapi.api.event.entity.player.PlayerStrengthOnBlockEvent;
 import net.modificationstation.stationapi.api.event.mod.InitEvent;
-import net.modificationstation.stationapi.api.item.tool.StationTool;
 import net.modificationstation.stationapi.impl.item.ToolEffectivenessImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -39,15 +38,15 @@ public class StationAPICompat {
         if (stack == null) return Optional.empty();
         if (!(object instanceof BlockState state)) return Optional.empty();
 
-        if(stack.getItem() instanceof StationTool stationTool) {
-            LOGGER.info(state.isIn(stationTool.getEffectiveBlocks(stack)));
-        }
-
         // Required for some modded tools
         if (stack.getItem() instanceof ToolItem toolItem) {
             if (toolItem.isSuitableFor(state.getBlock())) {
                 return Optional.of(ToolEffectivenessImpl.getMiningSpeedMultiplier(stack));
             }
+        }
+
+        if (ToolEffectivenessImpl.isSuitableFor(stack, state)) {
+            return Optional.of(ToolEffectivenessImpl.getMiningSpeedMultiplier(stack));
         }
 
         return Optional.of(UNMINABLE);
